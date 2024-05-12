@@ -7,7 +7,7 @@ const session = require('express-session');
 const app = express();
 
 mongoose.set('strictQuery', false);
-const mongoDb = 'mongodb+srv://dyhlin2000:damian1216@cluster0.u3nqdtv.mongodb.net/message_app?retryWrites=true&w=majority&appName=Cluster0';
+const mongoDb = 'mongodb+srv://dyhlin2000:damian1216@cluster0.u3nqdtv.mongodb.net/messge_app?retryWrites=true&w=majority&appName=Cluster0';
 
 async function main(){
     mongoose.connect(mongoDb);
