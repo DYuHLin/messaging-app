@@ -17,6 +17,7 @@ exports.post_register = asyncHandler(async (req, res, next) => {
                     surname: req.body.surname,
                     password: hashedPassword,
                     email: req.body.email,
+                    profileImg: req.body.image,
                     friends: []
                 });
                 await user.save();
@@ -37,7 +38,7 @@ exports.profile_image = asyncHandler(async (req, res, next) => {
 
         await image.save();
         res.status(201).json({message: "Image uploaded"});
-        
+
     } catch(err){
         res.status(409).json({message: err.message});
     }

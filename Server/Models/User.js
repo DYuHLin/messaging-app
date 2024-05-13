@@ -7,6 +7,7 @@ const userSchema = new Schema({
     surname: {type: String, required: true},
     password: {type: String, required: true},
     email: {type: String, required: true},
+    profileImg: {type: Schema.Types.ObjectId, ref: "ProfilePicture", default: "66423dd5b9c4d29102ffef31"},
     friends: [
         {user: {type: Schema.Types.ObjectId, ref: "Users"}}
     ],
