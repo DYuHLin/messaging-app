@@ -1,34 +1,41 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import axios from 'axios'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [img, setImg] = useState('')
+
+  const convertBase64 = (e) => {
+    const data = new FileReader();
+    data.addEventListener('load', () => {
+      setImg(data.result);
+    });
+    data.readAsDataURL(e.target.files[0]);
+  };
+
+  const handleSubmit = async () => {
+    try{
+      const subImg = {image: img};
+      axios.post('http://localhost:5000/api/postimage', subImg);
+    }catch(err){
+      console.log(err);
+    }
+    
+  };
+
+  const show = () => {
+    console.log(img)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <section>
+      <h1>Hello</h1>
+      <form method='POST' onSubmit={handleSubmit}>
+        <input type="file" lable="Image" name="myFile" id="file-upload" accept='.jpeg, .png, .jpg' onChange={convertBase64}/>
+
+        <button type='submit'>Submit</button>
+      </form>
+      <button onClick={show}>show</button>
+    </section>
   )
 }
 

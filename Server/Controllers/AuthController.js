@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const users = require('../Models/User');
+const images = require('../Models/ProfileImage');
 
 exports.post_register = asyncHandler(async (req, res, next) => {
     try{
@@ -26,4 +27,18 @@ exports.post_register = asyncHandler(async (req, res, next) => {
     }catch(err){
         next(err);
     };
+});
+
+exports.profile_image = asyncHandler(async (req, res, next) => {
+    try{
+        const image = new images({
+            image: req.body.image
+        });
+
+        await image.save();
+        res.status(201).json({message: "Image uploaded"});
+        
+    } catch(err){
+        res.status(409).json({message: err.message});
+    }
 });
