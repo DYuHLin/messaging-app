@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const auth = require('./Routers/Auth');
 const image = require('./Routers/Image');
+const message = require('./Routers/Message');
+const chat = require('./Routers/Chat');
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -27,5 +29,7 @@ main().catch((err) => console.log(err));
 
 app.use('/api/register', auth);
 app.use('/api/postimage', image);
+app.use('/api/message', message);
+app.use('/api/chat', chat);
 
 app.listen(5000, () => console.log("App is listening on 5000"));

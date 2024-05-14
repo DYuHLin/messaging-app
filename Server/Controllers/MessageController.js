@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const messages = require('../Models/Message');
 const {body, validationResult} = require('express-validator');
 
-const post_message = asyncHandler(async (req, res, next) => {
+exports.post_message = asyncHandler(async (req, res, next) => {
     try{
         const errors = validationResult(req);
 
@@ -25,6 +25,6 @@ const post_message = asyncHandler(async (req, res, next) => {
     };
 });
 
-const delete_message = asyncHandler(async (req, res, next) => {
+exports.delete_message = asyncHandler(async (req, res, next) => {
     await messages.findByIdAndUpdate(req.params.id);
 });
