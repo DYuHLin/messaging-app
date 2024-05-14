@@ -1,21 +1,21 @@
 const asyncHandler = require('express-async-handler');
 const {body, validationResult} = require('express-validator');
 const chats = require('../Models/Chat');
+const messages = require('../Models/Message');
 
 exports.post_chat = asyncHandler(async (req, res, next) => {
     try{
         const errors = validationResult(req);
 
         const chat = new chats({
-            user1: req.body.user1,
-            user2: req.body.user2
+            members: []
         });
-        
+        chat.members.push({user1: req.body.user1}, {user2: req.body.user2});
         if(!errors.isEmpty()){
             return console.log(errors);
-        } else {
+        } else {       
             await chat.save();
-            return res.status(201);
+            return res.json('OK');
         };
         
     }catch(err){
@@ -24,5 +24,6 @@ exports.post_chat = asyncHandler(async (req, res, next) => {
 });
 
 exports.delete_chat = asyncHandler(async (req, res, next) => {
-    
+    await chats.findByIdAndDelete(req.body.id);
+    await messages.findByIdAndDelete({reply: req.body.id});
 });
