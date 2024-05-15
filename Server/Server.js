@@ -7,6 +7,7 @@ const auth = require('./Routers/Auth');
 const image = require('./Routers/Image');
 const message = require('./Routers/Message');
 const chat = require('./Routers/Chat');
+const login = require('./Routers/Login');
 const groups = require('./Routers/Group');
 const bodyParser = require("body-parser");
 
@@ -29,6 +30,7 @@ async function main(){
 main().catch((err) => console.log(err));
 
 app.use('/api/register', auth);
+app.use('/api/login', login);
 app.use('/api/postimage', image);
 app.use('/api/message', message);
 app.use('/api/chat', chat);
