@@ -10,7 +10,7 @@ exports.post_chat = asyncHandler(async (req, res, next) => {
         const chat = new chats({
             members: []
         });
-        chat.members.push({user1: req.body.user1}, {user2: req.body.user2});
+        chat.members.push({user: req.body.user1}, {user: req.body.user2});
         if(!errors.isEmpty()){
             return console.log(errors);
         } else {       
@@ -24,6 +24,18 @@ exports.post_chat = asyncHandler(async (req, res, next) => {
 });
 
 exports.delete_chat = asyncHandler(async (req, res, next) => {
-    await chats.findByIdAndDelete(req.body.id);
-    await messages.findByIdAndDelete({reply: req.body.id});
+    // await chats.findByIdAndDelete(req.body.id);
+    // await messages.findByIdAndDelete({reply: req.body.id});
+    await chats.findOneAndUpdate({_id: req.params.id}, {
+        $pull: {
+            members: {user: req.body.userId}
+        }
+    });
+    // await chats.deleteOne().where('_id').equals(req.params.id).where('members')
+    // const chatEmp = await chats.findOne({$where: members.length < 2}).exec();
+    // if(chatEmp){
+    //     await chats.findOneAndUpdate({$where: members.length < 2});
+    // }
+    // await chats.findOneAndUpdate({$where: members.length < 2});
+    return res.json('OK');
 });

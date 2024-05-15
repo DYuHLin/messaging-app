@@ -7,6 +7,7 @@ const auth = require('./Routers/Auth');
 const image = require('./Routers/Image');
 const message = require('./Routers/Message');
 const chat = require('./Routers/Chat');
+const groups = require('./Routers/Group');
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -31,5 +32,6 @@ app.use('/api/register', auth);
 app.use('/api/postimage', image);
 app.use('/api/message', message);
 app.use('/api/chat', chat);
+app.use('/api/group', groups);
 
 app.listen(5000, () => console.log("App is listening on 5000"));
