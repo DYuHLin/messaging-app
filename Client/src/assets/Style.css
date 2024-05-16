@@ -5,6 +5,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Roboto Mono", monospace;
+    color: white;
   }
   
   html{
@@ -15,11 +16,45 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: rgb(243, 241, 241);
+    background-color: #060b26;
 }
 
 section{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.register-title{
+  margin-bottom: 80px;
+}
+
+.register-form{
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: 60%;
+  margin-bottom: 60px;
+}
+
+.form-btn{
+  padding: 9px;
+  background-color: #060b26;
+  cursor: pointer;
+}
+
+input{
+  width: 100%;
+  padding: 10px;
+  background-color: #040718;
+  border: none;
+}
+
+body::-webkit-scrollbar {
+  width: 6px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 7px;
 }

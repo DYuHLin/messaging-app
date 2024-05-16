@@ -1,42 +1,40 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios'
+import UserContext from '../Context/UserContext';
 
 function ImageUpload() {
+  const { user, setImageInfo } = useContext(UserContext);
     const [img, setImg] = useState('')
 
     const convertBase64 = (e) => {
       const data = new FileReader();
       data.addEventListener('load', () => {
         setImg(data.result);
+        axios.post('http://localhost:5000/api/postimage', {image: data.result}, {headers: { "Content-Type": "application/json" }})
+        .then((res) => {setImageInfo(res.data)})
       });
       data.readAsDataURL(e.target.files[0]);
     };
   
-    const handleSubmit = async () => {
-      try{
-        const subImg = {image: img};
-        axios.post('http://localhost:5000/api/postimage', subImg);
-      }catch(err){
-        console.log(err);
-      }
+    // const handleSubmit = async () => {
+    //   try{
+    //     const subImg = {image: img};
+    //     axios.post('http://localhost:5000/api/postimage', subImg)
+    //     .then((res) => {setImageInfo(res.data)})
+    //   }catch(err){
+    //     console.log(err);
+    //   }
       
-    };
-  
-    const show = () => {
-      console.log(img)
-    }
+    // };
   
     return (
-      <section>
-        <h1>Hello</h1>
-        <form method='POST' onSubmit={handleSubmit}>
-          <input type="file" lable="Image" name="myFile" id="file-upload" accept='.jpeg, .png, .jpg' onChange={convertBase64}/>
-  
-          <button type='submit'>Submit</button>
-        </form>
-        <button onClick={show}>show</button>
-      </section>
+      <>
+      <div>
+        <input type="file" lable="Image" name="myFile" id="file-upload" accept='.jpeg, .png, .jpg' onChange={convertBase64}/>
+      </div>
+        
+      </>
     )
 }
 
-export default ImageUpload
+export default ImageUpload;

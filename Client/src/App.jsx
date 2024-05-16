@@ -10,7 +10,6 @@ function App() {
     <div className="root-layout">
       <Sidebar />
       <main>
-        <h1>hi</h1>
         <Outlet />
       </main>
     </div>

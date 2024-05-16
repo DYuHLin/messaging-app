@@ -3,14 +3,20 @@ import { createBrowserRouter, RouterProvider, createRoutesFromElements, Route } 
 import UserContext from './Context/UserContext'
 import App from './App';
 import Home from './Pages/Home';
+import Login from './Pages/Login';
+import Register from './Pages/Register';
 
 function Router() {
-    const { user } = useContext(UserContext);
+    const { user, ProtectedRoutes } = useContext(UserContext);
 
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path='/' element={<App />}>
-                <Route index element={<Home />}/>
+                <Route path='/login' element={<Login />}/>
+                <Route path='/register' element={<Register />}/>
+                <Route element={<ProtectedRoutes />}>
+                    <Route index element={<Home />}/>
+                </Route>
             </Route>
         )
     )
