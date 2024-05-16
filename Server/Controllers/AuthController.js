@@ -6,7 +6,7 @@ const images = require('../Models/ProfileImage');
 
 exports.post_register = asyncHandler(async (req, res, next) => {
     try{
-        const user = await users.findOne({username: req.body.username});
+        const user = await users.findOne({email: req.body.email});
         if(user){
             console.log("email taken");
             return res.json("failed");
@@ -44,7 +44,7 @@ exports.profile_image = asyncHandler(async (req, res, next) => {
         });
 
         await image.save();
-        console.log(image);
+        // console.log(image);
         return res.json(image);
 
     } catch(err){

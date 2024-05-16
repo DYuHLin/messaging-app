@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ImageUpload from '../Components/ImageUpload'
 import UserContext from '../Context/UserContext'
-import {ToastContainer, toast} from 'react-toastify'
+import axios from 'axios'
+import {toast} from 'react-toastify'
 
 function Register() {
   const { imageInfo } = useContext(UserContext);
@@ -10,18 +11,17 @@ function Register() {
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmedPassword, setConfirmPedassword] = useState('');
+  const [error, setError] = useState('');
+  const [confirmedPassword, setConfirmedPassword] = useState('');
 
-  const show = () => {
-    console.log(imageInfo)
-  }
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newName = name.replace(/\s/g, "");
     const newSurname = surname.replace(/\s/g, "");
 
-    const register = {name: newName, surname: newSurname, email, password, profileImg: imageInfo.image, confirmedPassword};
+    const register = {name: newName, surname: newSurname, email, password, image: imageInfo._id, confirmedPassword};
 
     try{
           axios.post(`http://localhost:5000/api/register`, register, {headers: { "Content-Type": "application/json" }})
@@ -49,7 +49,7 @@ function Register() {
   return (
     <section>
       <h1 className='register-title'>Register</h1>
-      <form method='POST' className='register-form'>
+      <form method='POST' className='register-form' onSubmit={handleSubmit}>
           <input type="text" required name='name' id='name' className='name' onChange={(e) => setName(e.target.value)} placeholder='Name'/>
           <input type="text" required name='surname' id='surname' className='surname' onChange={(e) => setSurname(e.target.value)} placeholder='Surname'/>
           <input type="email" required name='email' id='email' className='email' onChange={(e) => setEmail(e.target.value)} placeholder='Email'/>
@@ -59,6 +59,7 @@ function Register() {
           <button type='submit' className='form-btn'>Submit</button>
       </form>
       <button onClick={show}>show</button>
+      <p className="error">{error}</p>
       <Link to='/login'>Login</Link>
     </section>
   )

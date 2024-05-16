@@ -5,7 +5,9 @@ const UserContext = createContext();
 
 export const UserProvider = ({children}) => {
     const [user, setUser] = useState(false);
-    const [imageInfo, setImageInfo] = useState(false);
+    const [imageInfo, setImageInfo] = useState({
+        _id: "66423dd5b9c4d29102ffef31"
+    });
 
     const ProtectedRoutes = () => {
         return (
