@@ -58,7 +58,6 @@ function Register() {
           <ImageUpload />
           <button type='submit' className='form-btn'>Submit</button>
       </form>
-      <button onClick={show}>show</button>
       <p className="error">{error}</p>
       <Link to='/login'>Login</Link>
     </section>

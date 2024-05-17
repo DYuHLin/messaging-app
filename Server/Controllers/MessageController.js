@@ -11,7 +11,8 @@ exports.post_message = asyncHandler(async (req, res, next) => {
             reply: req.body.chat,
             content: req.body.message,
             image: req.body.image,
-            video: req.body.video
+            video: req.body.video,
+            date: Date.now()
         });
 
         if(!errors.isEmpty()){

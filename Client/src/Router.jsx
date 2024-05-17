@@ -5,6 +5,7 @@ import App from './App';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
+import UsersList from './Pages/UsersList';
 
 function Router() {
     const { user, ProtectedRoutes } = useContext(UserContext);
@@ -16,6 +17,7 @@ function Router() {
                 <Route path='/register' element={<Register />}/>
                 <Route element={<ProtectedRoutes />}>
                     <Route index element={<Home />}/>
+                    <Route path='/users' element={<UsersList />}/>
                 </Route>
             </Route>
         )

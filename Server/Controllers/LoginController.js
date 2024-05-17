@@ -3,6 +3,7 @@ const asyncHandler = require('express-async-handler');
 const {body, ValidationResult} = require('express-validator');
 const users = require('../Models/User');
 const messages = require('../Models/Message');
+const bcrypt = require('bcryptjs');
 
 let refreshTokens = [];
 

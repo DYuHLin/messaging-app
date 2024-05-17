@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {toast} from 'react-toastify'
+import UserContext from '../Context/UserContext';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ function Login() {
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
+  const { setUser, user } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,8 +35,8 @@ function Login() {
 
   return (
     <section>
-      <h1>Login</h1>
-      <form method="POST" className='register-form'>
+      <h1 className='register-title'>Login</h1>
+      <form method="POST" className='register-form' onSubmit={handleSubmit}>
           <input type="text" required name='email' id='email' className='email' onChange={(e) => setEmail(e.target.value)} placeholder='Email'/>
           <input type="password" required name='password' id='password' className='password' onChange={(e) => setPassword(e.target.value)} placeholder='Password'/>
           <button>Login</button>

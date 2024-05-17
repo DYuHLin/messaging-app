@@ -8,6 +8,7 @@ const MessageSchema = new Schema({
     content: {type: String},
     image: {type: String},
     video: {type: String},
+    date: {type: Date, required: true, default: Date.now}
 });
 
 module.exports = mongoose.model("Messages", MessageSchema);

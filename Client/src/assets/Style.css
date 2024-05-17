@@ -46,8 +46,29 @@ section{
 input{
   width: 100%;
   padding: 10px;
-  background-color: #040718;
+  background-color: #0f1952;
   border: none;
+  border-radius: 7px;
+}
+
+.home-container{
+  display: flex;
+  width: 90%;
+  height: 100vh;
+}
+
+.chat-side{
+  width: 20%;
+  height: 100%;
+}
+
+.chat-box{
+  width: 80%;
+  height: 100%;
+}
+
+h3{
+  margin-bottom: 12px;
 }
 
 body::-webkit-scrollbar {

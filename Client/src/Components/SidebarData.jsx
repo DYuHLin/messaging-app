@@ -11,8 +11,8 @@ export const SidebarData = [
         cName: 'nav-text'
     },
     {
-        title: 'Chats',
-        path: '/',
+        title: 'Users',
+        path: '/users',
         icons: <IoIcons.IoMdChatboxes />,
         cName: 'nav-text'
     },

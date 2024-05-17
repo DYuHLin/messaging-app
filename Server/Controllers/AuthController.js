@@ -51,3 +51,9 @@ exports.profile_image = asyncHandler(async (req, res, next) => {
         res.status(409).json({message: err.message});
     }
 });
+
+exports.get_users = asyncHandler(async (req, res, next) => {
+    const usersList = await users.find().populate('profileImg').exec();
+
+    return res.json(usersList);
+});
