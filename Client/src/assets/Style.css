@@ -39,7 +39,7 @@ section{
 
 .form-btn{
   padding: 9px;
-  background-color: #060b26;
+  background-color: #0e1958;
   cursor: pointer;
 }
 
@@ -69,6 +69,57 @@ input{
 
 h3{
   margin-bottom: 12px;
+}
+
+.user-container{
+  width: 65%;
+}
+
+.chat-bar{
+  margin-bottom: 24px;
+}
+
+.user{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+}
+
+.user-options{
+  background-color: #0f1952;
+  padding: 15px;
+  width: 10%;
+  border-radius: 7px;
+}
+
+.options-user{
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  left: -20px;
+}
+
+li{
+  cursor: pointer;
+  font-size: 28px;
+}
+
+.user-info{
+  display: flex;
+  align-items: center;
+}
+
+.img-container{
+  height: 50px;
+  width: 50px;
+  border-collapse: separate;
+  border-radius: 15px;
+}
+
+.user-img{
+  max-height: 100px;
+  max-width: 50px;
 }
 
 body::-webkit-scrollbar {

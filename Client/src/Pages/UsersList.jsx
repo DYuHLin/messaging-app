@@ -1,7 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
+import * as IoIcons from 'react-icons/io'
+import * as faIcons from 'react-icons/fa'
+import UserContext from '../Context/UserContext'
+import {jwtDecode} from 'jwt-decode'
 
 function UsersList() {
+    const { user } = useContext(UserContext);
     const [users, setUsers] = useState(false);
     const [search, setSearch] = useState('');
 
@@ -10,9 +15,10 @@ function UsersList() {
             .then((res) => setUsers(res.data))
     },[]);
 
-    const show = () => {
-        console.log(users)
-    }
+    const createChat = (userId) => {
+        const decoded = jwtDecode(user.accessToken);
+        axios.post('http://localhost:5000/api/chat', {user1: decoded.user._id, user2: userId}, {headers: {"Content-Type": "application/json"}})
+    };
 
   return (
     <section>
@@ -26,16 +32,26 @@ function UsersList() {
                     users === false ? (<p>There are no users</p>):
                     users.map((res, key) => {
                         return (
-                            <div className="user">
-                                <img src={res.profileImg.image} alt="user icon" />
-                                <span>{res.name + " " + res.surname}</span>
+                            <div className="user" key={key}>
+                                <div className="user-info">
+                                    <div className="img-container">
+                                        <img className='user-img' src={res.profileImg.image} alt="user icon" />
+                                    </div>
+                                    <span>{res.name + " " + res.surname}</span>
+                                </div>
+                                
+                                    <div className={`user-options`}>                                   
+                                    <ul className='options-user'>
+                                        <li><faIcons.FaUserFriends /></li>
+                                        <li onClick={() => createChat(res._id)}><IoIcons.IoMdChatbubbles /></li>
+                                    </ul>
+                                </div>
                             </div>
                         )
                     })
                 }
             </div>
         </div>
-        <button onClick={show}>show</button>
     </section>
   )
 }
