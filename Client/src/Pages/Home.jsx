@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import UserContext from '../Context/UserContext';
 import { jwtDecode } from 'jwt-decode';
+import ChatBar from '../Components/ChatBar';
 
 function Home() {
   const [chats, setChats] = useState(false);
@@ -22,16 +23,7 @@ function Home() {
     <section>
       <h1 className='register-title'>Home</h1>
       <div className="home-container">
-        <div className="chat-side">
-          <h3>Chats</h3>
-          <input type="text" placeholder='Search Chats' className='chat-bar'/>
-
-          <div className="users-chats">
-            {
-              chats === false ? <p>You do not have chats...</p> : ''
-            }
-          </div>
-        </div>
+        <ChatBar />
         <div className="chat-box">
           <div className="messages">
 
