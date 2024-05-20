@@ -5,7 +5,9 @@ const mongoose = require('mongoose');
 const messages = require('../Models/Message');
 
 exports.get_chats = asyncHandler(async(req, res, next) => {
-    const chat = await chats.find( {$or: [ {user: req.params.id}, {creator: req.params.id} ]} ).populate('user').populate('creator').exec();
+    const chat = await chats.find( {$or: [ {user: req.params.id}, 
+        {creator: req.params.id} ]} ).populate('user').populate('creator').populate([{path: 'user', 
+        populate: [{path: 'profileImg'}]}]).populate([{path: 'creator', populate: [{path: 'profileImg'}]}]).exec();
 
     return res.json(chat);
 });
