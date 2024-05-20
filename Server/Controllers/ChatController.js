@@ -3,6 +3,12 @@ const {body, validationResult} = require('express-validator');
 const chats = require('../Models/Chat');
 const messages = require('../Models/Message');
 
+exports.get_chats = asyncHandler(async(req, res, next) => {
+    const chat = await chats.find({'members.user': req.params.id}).populate({path: 'members', populate: {path: 'user'}}).exec();
+
+    return res.json(chat);
+});
+
 exports.post_chat = asyncHandler(async (req, res, next) => {
     try{
         const errors = validationResult(req);
