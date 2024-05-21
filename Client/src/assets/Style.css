@@ -131,6 +131,12 @@ li{
 
 .send-message{
   height: 10vh;
+  display: flex;
+  gap: 24px;
+}
+
+.message-input{
+  width: 90%;
 }
 
 .img-label{
@@ -148,7 +154,7 @@ li{
   display: none;
 }
 
-.send-message{
+.send-message-btn{
   background-color: #0f1952;
 }
 
@@ -156,9 +162,10 @@ li{
   display: none;
 }
 
-.message-form{
+/* .message-form{
   display: flex;
-}
+  gap: 10px;
+} */
 
 body::-webkit-scrollbar {
   width: 6px;
