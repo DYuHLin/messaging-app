@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import UserContext from '../Context/UserContext'
 import { jwtDecode } from 'jwt-decode'
+import { Link } from 'react-router-dom';
 
 function ChatBar() {
     const [chats, setChats] = useState(false);
@@ -28,24 +29,29 @@ function ChatBar() {
             {
               chats === false ? <p>You do not have chats...</p> : chats.map((chat, id) => {
                 return(
+                    
                     chat.user._id !== decoded.user._id ? (
-                        <div className="user" key={id}>
-                            <div className="user-info">
-                                <div className="img-container">
-                                    <img className='user-img' src={chat.user.profileImg.image} alt="user icon" /> 
-                                </div>
-                                <span>{chat.user.name + " " + chat.user.surname}</span>
-                            </div>                              
-                        </div>
+                        <Link to={`/${chat._id}`} key={id}>
+                            <div className="user" key={id}>
+                                <div className="user-info">
+                                    <div className="img-container">
+                                        <img className='user-img' src={chat.user.profileImg.image} alt="user icon" /> 
+                                    </div>
+                                    <span>{chat.user.name + " " + chat.user.surname}</span>
+                                </div>                              
+                            </div>
+                        </Link>
                     ) : chat.creator._id !== decoded.user._id ? (
-                        <div className="user" key={id}>
-                            <div className="user-info">
-                                <div className="img-container">
-                                    <img className='user-img' src={chat.creator.profileImg.image} alt="user icon" /> 
-                                </div>
-                                <span>{chat.creator.name + " " + chat.creator.surname}</span>
-                            </div>                              
-                        </div>
+                        <Link to={`/${chat._id}`} key={id}>
+                            <div className="user" key={id}>
+                                <div className="user-info">
+                                    <div className="img-container">
+                                        <img className='user-img' src={chat.creator.profileImg.image} alt="user icon" /> 
+                                    </div>
+                                    <span>{chat.creator.name + " " + chat.creator.surname}</span>
+                                </div>                              
+                            </div>
+                        </Link>
                     ): ''
                 )
               }) 

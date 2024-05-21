@@ -17,6 +17,7 @@ function Router() {
                 <Route path='/register' element={<Register />}/>
                 <Route element={<ProtectedRoutes />}>
                     <Route index element={<Home />}/>
+                    <Route path='/:id' element={<Home />}/>
                     <Route path='/users' element={<UsersList />}/>
                 </Route>
             </Route>

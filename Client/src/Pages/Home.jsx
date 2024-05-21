@@ -3,6 +3,7 @@ import axios from 'axios'
 import UserContext from '../Context/UserContext';
 import { jwtDecode } from 'jwt-decode';
 import ChatBar from '../Components/ChatBar';
+import ChatBox from '../Components/ChatBox';
 
 function Home() {
   const { user } = useContext(UserContext);
@@ -12,16 +13,7 @@ function Home() {
       <h1 className='register-title'>Home</h1>
       <div className="home-container">
         <ChatBar />
-        <div className="chat-box">
-          <div className="messages">
-
-          </div>
-          <div className="send-message">
-            <form method='POST'>
-
-            </form>
-          </div>
-        </div>
+        <ChatBox />
       </div>
     </section>
   )
