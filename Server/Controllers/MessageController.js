@@ -26,6 +26,12 @@ exports.post_message = asyncHandler(async (req, res, next) => {
     };
 });
 
+exports.get_messages = asyncHandler(async(req, res, next) => {
+    const messageInChat = await messages.find({reply: req.params.id}).exec();
+
+    return res.json(messageInChat);
+});
+
 exports.delete_message = asyncHandler(async (req, res, next) => {
     await messages.findByIdAndUpdate(req.params.id);
 });
