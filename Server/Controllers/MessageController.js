@@ -12,7 +12,7 @@ exports.post_message = asyncHandler(async (req, res, next) => {
             content: req.body.message,
             image: req.body.image,
             video: req.body.video,
-            date: Date.now()
+            date: req.body.date
         });
 
         if(!errors.isEmpty()){

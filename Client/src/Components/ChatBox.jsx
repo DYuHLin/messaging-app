@@ -2,20 +2,20 @@ import React, { useContext, useEffect, useState } from 'react'
 import UserContext from '../Context/UserContext'
 import SendMessage from './SendMessage'
 import axios from 'axios'
+import { io } from 'socket.io-client'
 
 function ChatBox(props) {
-  const [messages, setMessages] = useState(false);
+  const { user, messages, setMessages } = useContext(UserContext);
 
-  const { user } = useContext(UserContext);
+  // const socket = io('http://localhost:5000');
 
-  // useEffect(() => {
-  //   axios({method: 'GET', url: `http://localhost:5000/api/message/${props.chatId}`}, {headers: { "Content-Type": "application/json" }})
-  //           .then((res) => setMessages(res.data))
-  // },[]);
+   useEffect(() => {
+     axios({method: 'GET', url: `http://localhost:5000/api/message/${props.chatId}`}, {headers: { "Content-Type": "application/json" }})
+             .then((res) => setMessages(res.data))
+   },[]);
 
   const show = () => {
-    axios({method: 'GET', url: `http://localhost:5000/api/message/${props.chatId}`}, {headers: { "Content-Type": "application/json" }})
-             .then((res) => console.log(res.data))
+    console.log(messages)
   }
 
   return (

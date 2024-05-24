@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import UserContext from '../Context/UserContext'
 import { jwtDecode } from 'jwt-decode'
+import { io } from 'socket.io-client'
+
+// const socket = io.connect('http://localhost:5000');
 
 function SendMessage() {
     const [link, setLink] = useState('');
@@ -12,7 +15,7 @@ function SendMessage() {
     const [hidden, setHidden] = useState('hidden');
     const [hide, setHide] = useState('');
 
-    const { user } = useContext(UserContext);
+    const { user, setMessages } = useContext(UserContext);
     let { id } = useParams();
 
     const showLink = () => {
@@ -28,9 +31,9 @@ function SendMessage() {
       const sendMessage = () => {
         try{
           const decoded = jwtDecode(user.accessToken);
-          const messageSend = {id: decoded.user._id, chat: id, image: image, message: content, video: link};
-          axios.post(`http://localhost:5000/api/message`, messageSend, {headers: { "Content-Type": "application/json" }})
-           
+          const messageSend = {id: decoded.user._id, chat: id, image: image, message: content, video: link, date: Date.now()};
+          axios.post(`http://localhost:5000/api/message`, messageSend, {headers: { "Content-Type": "application/json" }});
+           socket.emit('send_message')
         }catch(err){
           console.log(err);
         };

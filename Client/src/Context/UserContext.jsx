@@ -5,6 +5,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({children}) => {
     const [user, setUser] = useState(false);
+    const [messages, setMessages] = useState(false);
     const [imageInfo, setImageInfo] = useState({
         _id: "66423dd5b9c4d29102ffef31"
     });
@@ -16,7 +17,7 @@ export const UserProvider = ({children}) => {
     };
 
     return(
-        <UserContext.Provider value={{user, setUser, ProtectedRoutes, setImageInfo, imageInfo}}>
+        <UserContext.Provider value={{user, setUser, ProtectedRoutes, setImageInfo, imageInfo, messages, setMessages}}>
             {children}
         </UserContext.Provider>
     )

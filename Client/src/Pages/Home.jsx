@@ -1,18 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import axios from 'axios'
 import UserContext from '../Context/UserContext';
-import { jwtDecode } from 'jwt-decode'
 import ChatBar from '../Components/ChatBar'
 import ChatBox from '../Components/ChatBox'
 import { useParams } from 'react-router-dom'
+import { io } from 'socket.io-client'
+const socket = io.connect('http://localhost:5000');
 
 function Home() {
   const { user } = useContext(UserContext);
   let { id } = useParams();
 
-  const show = () => {
-    console.log(id)
-  }
+  const socket = useRef();
+
+  useEffect(() => {
+
+  },[]);
 
   return (
     <section>
@@ -24,7 +27,6 @@ function Home() {
         }
         
       </div>
-      <button onClick={show}>show</button>
     </section>
   )
 }

@@ -3,6 +3,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const http = require('http');
 const auth = require('./Routers/Auth');
 const image = require('./Routers/Image');
 const message = require('./Routers/Message');
@@ -10,6 +11,7 @@ const chat = require('./Routers/Chat');
 const login = require('./Routers/Login');
 const groups = require('./Routers/Group');
 const bodyParser = require("body-parser");
+const socket = require('socket.io');
 
 const app = express();
 
@@ -36,4 +38,25 @@ app.use('/api/message', message);
 app.use('/api/chat', chat);
 app.use('/api/group', groups);
 
-app.listen(5000, () => console.log("App is listening on 5000"));
+
+const server = app.listen(5000, () => console.log("App is listening on 5000"));
+
+const io = socket(server, {
+    cors: {
+        origin: 'http://localhost:5173',
+        credentials: true,
+    }
+});
+
+// global.onlineUsers = new Map();
+
+io.on('connection', (socket) => {
+    io.on('connection', (socket) => {
+        console.log(socket.id)
+    });
+
+    socket.on('send_message', (data) => {
+        // socket.broadcast.emit('receive_message', data)
+        console.log(data);
+    });
+});
