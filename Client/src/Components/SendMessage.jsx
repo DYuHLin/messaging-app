@@ -6,8 +6,6 @@ import UserContext from '../Context/UserContext'
 import { jwtDecode } from 'jwt-decode'
 import { io } from 'socket.io-client'
 
-// const socket = io.connect('http://localhost:5000');
-
 function SendMessage() {
     const [link, setLink] = useState('');
     const [content, setContent] = useState('');
@@ -15,8 +13,7 @@ function SendMessage() {
     const [hidden, setHidden] = useState('hidden');
     const [hide, setHide] = useState('');
 
-    const { user, setMessages } = useContext(UserContext);
-    let { id } = useParams();
+    const { user, setMessages, chat, socket } = useContext(UserContext);
 
     const showLink = () => {
         if(hidden === 'hidden'){
@@ -31,9 +28,13 @@ function SendMessage() {
       const sendMessage = () => {
         try{
           const decoded = jwtDecode(user.accessToken);
-          const messageSend = {id: decoded.user._id, chat: id, image: image, message: content, video: link, date: Date.now()};
-          axios.post(`http://localhost:5000/api/message`, messageSend, {headers: { "Content-Type": "application/json" }});
-           socket.emit('send_message')
+          const messageSend = {id: decoded.user._id, chat: chat, image: image, message: content, video: link, date: Date.now()};
+          axios.post(`http://localhost:5000/api/message`, messageSend, {headers: { "Content-Type": "application/json" }})
+            .then((res) => {
+              socket.emit('send_message', res.data)
+              return () => socket.off("message");
+            })
+          
         }catch(err){
           console.log(err);
         };

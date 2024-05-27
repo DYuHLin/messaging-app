@@ -19,7 +19,7 @@ exports.post_message = asyncHandler(async (req, res, next) => {
             return console.log(errors);
         } else {
             await message.save();
-            return res.status(201);
+            return res.json(message);
         };
     } catch(err){
 

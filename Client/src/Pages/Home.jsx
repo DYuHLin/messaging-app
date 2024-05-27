@@ -3,19 +3,9 @@ import axios from 'axios'
 import UserContext from '../Context/UserContext';
 import ChatBar from '../Components/ChatBar'
 import ChatBox from '../Components/ChatBox'
-import { useParams } from 'react-router-dom'
-import { io } from 'socket.io-client'
-const socket = io.connect('http://localhost:5000');
 
 function Home() {
-  const { user } = useContext(UserContext);
-  let { id } = useParams();
-
-  const socket = useRef();
-
-  useEffect(() => {
-
-  },[]);
+  const { user, chat } = useContext(UserContext);
 
   return (
     <section>
@@ -23,7 +13,7 @@ function Home() {
       <div className="home-container">
         <ChatBar />
         {
-          id === undefined ?  '' : <ChatBox chatId = {id}/>
+          chat === false ?  '' : <ChatBox/>
         }
         
       </div>

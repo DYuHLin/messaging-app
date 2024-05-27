@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 function ChatBar() {
     const [chats, setChats] = useState(false);
-    const { user } = useContext(UserContext);
+    const { user, setChat, chat, setMessages, messages, socket } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
   
     useEffect(() => {
@@ -17,9 +17,19 @@ function ChatBar() {
       },[]);
 
       const show = () => {
-        console.log(chats)
+        console.log(chat)
+        console.log(messages)
       }
+      const selectChat = (id) => {
+        setChat(id);
+        axios({method: "GET", url: `http://localhost:5000/api/message/${id}`}, {headers: {"Content-Type": "application/json"}})
+            .then(res => setMessages(res.data)
+            ).catch(err => console.log(err));  
 
+        if(chat !== false){
+            socket.emit('join_chat', chat);
+        };
+      };
   return (
     <div className="chat-side">
         <h3>Chats</h3>
@@ -30,20 +40,8 @@ function ChatBar() {
               chats === false ? <p>You do not have chats...</p> : chats.map((chat, id) => {
                 return(
                     
-                    chat.user._id !== decoded.user._id ? (
-                        <Link to={`/${chat._id}`} key={id}>
-                            <div className="user" key={id}>
-                                <div className="user-info">
-                                    <div className="img-container">
-                                        <img className='user-img' src={chat.user.profileImg.image} alt="user icon" /> 
-                                    </div>
-                                    <span>{chat.user.name + " " + chat.user.surname}</span>
-                                </div>                              
-                            </div>
-                        </Link>
-                    ) : chat.creator._id !== decoded.user._id ? (
-                        <Link to={`/${chat._id}`} key={id}>
-                            <div className="user" key={id}>
+                    chat.user._id == decoded.user._id ? (
+                            <div className="user" key={id} onClick={() => selectChat(chat._id)}>
                                 <div className="user-info">
                                     <div className="img-container">
                                         <img className='user-img' src={chat.creator.profileImg.image} alt="user icon" /> 
@@ -51,13 +49,21 @@ function ChatBar() {
                                     <span>{chat.creator.name + " " + chat.creator.surname}</span>
                                 </div>                              
                             </div>
-                        </Link>
+                    ) : chat.creator._id == decoded.user._id ? (
+                            <div className="user" key={id} onClick={() => selectChat(chat._id)}>
+                                <div className="user-info">
+                                    <div className="img-container">
+                                        <img className='user-img' src={chat.user.profileImg.image} alt="user icon" /> 
+                                    </div>
+                                    <span>{chat.user.name + " " + chat.user.surname}</span>
+                                </div>                              
+                            </div>
                     ): ''
                 )
               }) 
             }
         </div>
-        {/* <button onClick={show}>show</button> */}
+        <button onClick={show}>show</button> 
     </div>
   )
 }
