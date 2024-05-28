@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useRef, useState } from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
@@ -12,6 +12,7 @@ export const UserProvider = ({children}) => {
         _id: "66423dd5b9c4d29102ffef31"
     });
     const socket = io.connect('http://localhost:5000');
+    const chatId = useRef();
 
     const ProtectedRoutes = () => {
         return (
@@ -20,7 +21,7 @@ export const UserProvider = ({children}) => {
     };
 
     return(
-        <UserContext.Provider value={{user, setUser, ProtectedRoutes, setImageInfo, imageInfo, messages, setMessages, chat, setChat, socket}}>
+        <UserContext.Provider value={{user, setUser, ProtectedRoutes, setImageInfo, imageInfo, messages, setMessages, chat, setChat, socket, chatId}}>
             {children}
         </UserContext.Provider>
     )

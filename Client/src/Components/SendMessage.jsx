@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import * as faIcons from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
@@ -6,14 +6,15 @@ import UserContext from '../Context/UserContext'
 import { jwtDecode } from 'jwt-decode'
 import { io } from 'socket.io-client'
 
-function SendMessage() {
+function SendMessage({socket}) {
     const [link, setLink] = useState('');
     const [content, setContent] = useState('');
     const [image, setImage] = useState('');
     const [hidden, setHidden] = useState('hidden');
     const [hide, setHide] = useState('');
+    const currentMsg = useRef();
 
-    const { user, setMessages, chat, socket } = useContext(UserContext);
+    const { user, setMessages, chat, chatId } = useContext(UserContext);
 
     const showLink = () => {
         if(hidden === 'hidden'){
@@ -31,7 +32,8 @@ function SendMessage() {
           const messageSend = {id: decoded.user._id, chat: chat, image: image, message: content, video: link, date: Date.now()};
           axios.post(`http://localhost:5000/api/message`, messageSend, {headers: { "Content-Type": "application/json" }})
             .then((res) => {
-              socket.emit('send_message', res.data)
+              socket.emit('send_message', {message: res.data, chat: chatId.current})
+              setMessages(content => [...content, res.data]);
               return () => socket.off("message");
             })
           

@@ -51,15 +51,20 @@ const io = socket(server, {
 // global.onlineUsers = new Map();
 
 io.on('connection', (socket) => {
-    console.log(socket.id);
+    console.log('connected:' +socket.id);
 
     socket.on('join_chat', (data) => {
-        console.log(data);
+        console.log(`user ${socket.id} joined the room ${data}`)
         socket.join(data);
     });
 
     socket.on('send_message', (data) => {
+        socket.to(data.chat).emit('receive_message', data);
         console.log(data);
-        socket.broadcast.emit('receive_message', data);
+        // socket.broadcast.emit('receive_message', data);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('disconnected:' + socket.id);
     });
 });

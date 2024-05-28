@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import UserContext from '../Context/UserContext'
 import { jwtDecode } from 'jwt-decode'
 import { Link } from 'react-router-dom';
 
-function ChatBar() {
+function ChatBar({socket}) {
     const [chats, setChats] = useState(false);
-    const { user, setChat, chat, setMessages, messages, socket } = useContext(UserContext);
+    const { user, setChat, chat, setMessages, messages, chatId } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
   
     useEffect(() => {
@@ -17,18 +17,19 @@ function ChatBar() {
       },[]);
 
       const show = () => {
-        console.log(chat)
+        console.log(chatId.current)
         console.log(messages)
       }
       const selectChat = (id) => {
         setChat(id);
+        chatId.current = id;
         axios({method: "GET", url: `http://localhost:5000/api/message/${id}`}, {headers: {"Content-Type": "application/json"}})
             .then(res => setMessages(res.data)
             ).catch(err => console.log(err));  
 
-        if(chat !== false){
-            socket.emit('join_chat', chat);
-        };
+
+        socket.emit('join_chat', chatId.current);
+   
       };
   return (
     <div className="chat-side">
