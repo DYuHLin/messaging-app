@@ -52,6 +52,16 @@ exports.profile_image = asyncHandler(async (req, res, next) => {
     }
 });
 
+exports.add_friend = asyncHandler(async (req, res, next) => {
+    const findFriend = await users.findOne({_id: req.body.userId, 'friends.user': req.body.friendId});
+    if(findFriend){
+        return res.json(findFriend);
+    } else{
+        await users.updateOne({_id: req.body.userId}, {$push: {friends: {user: req.body.friendId}}});
+        return res.json('ok');
+    }
+});
+
 exports.get_users = asyncHandler(async (req, res, next) => {
     const usersList = await users.find().populate('profileImg').exec();
 

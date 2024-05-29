@@ -27,7 +27,7 @@ exports.post_message = asyncHandler(async (req, res, next) => {
 });
 
 exports.get_messages = asyncHandler(async(req, res, next) => {
-    const messageInChat = await messages.find({reply: req.params.id}).exec();
+    const messageInChat = await messages.find({reply: req.params.id}).populate('user').exec();
 
     return res.json(messageInChat);
 });

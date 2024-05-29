@@ -72,6 +72,52 @@ input{
 
 .messages{
   height: 100vh;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+}
+
+.msg{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.msg.you{
+  align-items: flex-end;
+} 
+
+.msg.other{
+  align-items: flex-start;
+}
+
+.msg-info{
+  margin-bottom: 24px;
+}
+
+.msg-name{
+  font-size: small;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.msg-time {
+  font-size: smalls;
+}
+
+.msg-bubble.other-bubble{
+  background-color: #24348a;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.msg-bubble.you-bubble{
+  background-color: #7a319c;
+  padding: 10px;
+  border-radius: 8px;
 }
 
 h3{

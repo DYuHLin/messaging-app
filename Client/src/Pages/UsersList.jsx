@@ -20,6 +20,10 @@ function UsersList() {
         axios.post('http://localhost:5000/api/chat', {user1: decoded.user._id, user2: userId}, {headers: {"Content-Type": "application/json"}})
     };
 
+    const addFriend = (userId) => {
+        
+    };
+
   return (
     <section>
         <h1 className="register-title">Users</h1>
