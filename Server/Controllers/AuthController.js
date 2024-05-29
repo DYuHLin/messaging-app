@@ -63,7 +63,7 @@ exports.add_friend = asyncHandler(async (req, res, next) => {
 });
 
 exports.get_friends = asyncHandler(async (req, res, next) => {
-    const friends = await users.findOne({_id: req.body.userId}).populate('friends.user').populate([
+    const friends = await users.findOne({_id: req.params.id}).populate('friends.user').populate([
         {
             path: 'friends.user',
             populate: [{path: 'profileImg'}]

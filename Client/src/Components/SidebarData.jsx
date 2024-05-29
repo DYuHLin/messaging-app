@@ -18,7 +18,7 @@ export const SidebarData = [
     },
     {
         title: 'Friends',
-        path: '/',
+        path: '/friends',
         icons: <faIcons.FaUserFriends />,
         cName: 'nav-text'
     },

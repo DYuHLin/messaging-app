@@ -6,6 +6,7 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
 import UsersList from './Pages/UsersList';
+import Friends from './Pages/Friends';
 
 function Router() {
     const { user, ProtectedRoutes } = useContext(UserContext);
@@ -19,6 +20,7 @@ function Router() {
                     <Route index element={<Home />}/>
                     <Route path='/:id' element={<Home />}/>
                     <Route path='/users' element={<UsersList />}/>
+                    <Route path='/friends' element={<Friends />}/>
                 </Route>
             </Route>
         )

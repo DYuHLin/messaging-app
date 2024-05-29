@@ -21,7 +21,8 @@ function UsersList() {
     };
 
     const addFriend = (userId) => {
-        
+        const decoded = jwtDecode(user.accessToken);
+        axios.put('http://localhost:5000/api/register/addfriend', {userId: decoded.user._id, friendId: userId}, {headers: {"Content-Type": "application/json"}})
     };
 
   return (
@@ -46,7 +47,7 @@ function UsersList() {
                                 
                                     <div className={`user-options`}>                                   
                                     <ul className='options-user'>
-                                        <li><faIcons.FaUserFriends /></li>
+                                        <li onClick={() => addFriend(res._id)}><faIcons.FaUserFriends /></li>
                                         <li onClick={() => createChat(res._id)}><IoIcons.IoMdChatbubbles /></li>
                                     </ul>
                                 </div>

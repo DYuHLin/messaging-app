@@ -43,3 +43,9 @@ exports.delete_group = asyncHandler(async (req, res, next) => {
 
     return res.json('OK');
 });
+
+exports.delete_group_admin = asyncHandler(async (req, res, next) => {
+    await groups.findByIdAndDelete(req.body.id);
+    await messages.findByIdAndDelete({reply: req.body.id});
+    return res.json('OK');
+});

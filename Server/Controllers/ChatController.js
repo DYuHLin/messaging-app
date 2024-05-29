@@ -33,18 +33,7 @@ exports.post_chat = asyncHandler(async (req, res, next) => {
 });
 
 exports.delete_chat = asyncHandler(async (req, res, next) => {
-    // await chats.findByIdAndDelete(req.body.id);
-    // await messages.findByIdAndDelete({reply: req.body.id});
-    await chats.findOneAndUpdate({_id: req.params.id}, {
-        $pull: {
-            members: {user: req.body.userId}
-        }
-    });
-    // await chats.deleteOne().where('_id').equals(req.params.id).where('members')
-    // const chatEmp = await chats.findOne({$where: members.length < 2}).exec();
-    // if(chatEmp){
-    //     await chats.findOneAndUpdate({$where: members.length < 2});
-    // }
-    // await chats.findOneAndUpdate({$where: members.length < 2});
+    await chats.findByIdAndDelete(req.body.id);
+    await messages.findByIdAndDelete({reply: req.body.id});
     return res.json('OK');
 });
