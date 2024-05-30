@@ -17,7 +17,13 @@ const getRefreshToken = (user) => {
 
 exports.post_login = asyncHandler(async (req, res, next) => {
     try{
-        const eMail = await users.findOne({email: req.body.email});
+        const eMail = await users.findOne({email: req.body.email}).populate('profileImg').populate('friends.user').populate([
+            {
+                path: 'friends.user',
+                populate: [{path: 'profileImg'}]
+            }
+        ]).exec();
+
         if(!eMail){
             console.log("Incorrect email");
             return res.json("email");

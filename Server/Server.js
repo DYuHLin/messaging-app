@@ -48,8 +48,6 @@ const io = socket(server, {
     }
 });
 
-// global.onlineUsers = new Map();
-
 io.on('connection', (socket) => {
     console.log('connected:' +socket.id);
 

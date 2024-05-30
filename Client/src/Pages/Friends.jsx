@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import * as IoIcons from 'react-icons/io'
 import * as faIcons from 'react-icons/fa'
@@ -7,14 +7,8 @@ import {jwtDecode} from 'jwt-decode'
 
 function Friends() {
   const { user } = useContext(UserContext);
-    const [users, setUsers] = useState(false);
     const [search, setSearch] = useState('');
     const decodedUser = jwtDecode(user.accessToken);
-    useEffect(() => {
-
-        axios({method: 'GET', url: `http://localhost:5000/api/register/${decodedUser.user._id}`}, {headers: { "Content-Type": "application/json" }})
-            .then((res) => setUsers(res.data))
-    },[]);
 
     const createChat = (userId) => {
         const decoded = jwtDecode(user.accessToken);
@@ -35,9 +29,9 @@ function Friends() {
             </div>
             <div className="users">
                 {
-                  users === false ? (<p>There are no friends</p>):
-                    users.friends.length < 0 ? (<p>There are no friends</p>):
-                    users.friends.map((res, key) => {
+                  decodedUser.user.friends === false ? (<p>There are no friends</p>):
+                  decodedUser.user.friends < 0 ? (<p>There are no friends</p>):
+                  decodedUser.user.friends.map((res, key) => {
                         return (
                             <div className="user" key={key}>
                                 <div className="user-info">

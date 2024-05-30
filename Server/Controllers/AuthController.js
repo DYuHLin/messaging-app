@@ -62,17 +62,6 @@ exports.add_friend = asyncHandler(async (req, res, next) => {
     }
 });
 
-exports.get_friends = asyncHandler(async (req, res, next) => {
-    const friends = await users.findOne({_id: req.params.id}).populate('friends.user').populate([
-        {
-            path: 'friends.user',
-            populate: [{path: 'profileImg'}]
-        }
-    ]).exec();
-
-    return res.json(friends);
-});
-
 exports.delete_friend = asyncHandler(async (req, res, next) => {
     await users.findOneAndUpdate({_id: req.body.userId}, {
         $pull: {
@@ -84,7 +73,12 @@ exports.delete_friend = asyncHandler(async (req, res, next) => {
 });
 
 exports.get_users = asyncHandler(async (req, res, next) => {
-    const usersList = await users.find().populate('profileImg').exec();
+    const usersList = await users.find().populate('profileImg').populate('friends.user').populate([
+        {
+            path: 'friends.user',
+            populate: [{path: 'profileImg'}]
+        }
+    ]).exec();
 
     return res.json(usersList);
 });

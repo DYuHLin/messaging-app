@@ -11,7 +11,7 @@ function UsersList() {
     const [search, setSearch] = useState('');
 
     useEffect(() => {
-        axios({method: 'GET', url: `http://localhost:5000/api/register/users`}, {headers: { "Content-Type": "application/json" }})
+        axios({method: 'GET', url: `http://localhost:5000/api/register/getusers`}, {headers: { "Content-Type": "application/json" }})
             .then((res) => setUsers(res.data))
     },[]);
 

@@ -7,9 +7,9 @@ exports.create_group = asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
 
         const group = new groups({
-            members: [],
             name: req.body.name,
-            creator: req.body.userId
+            creator: req.body.id,
+            members: [],
         });
 
         if(!errors.isEmpty()){
@@ -25,17 +25,21 @@ exports.create_group = asyncHandler(async (req, res, next) => {
 });
 
 exports.add_members = asyncHandler(async (req, res, next) => {
-    await groups.findOneAndUpdate({_id: req.params.id}, {
-        $push: {
-            members: {user: req.body.userId}
-        }
-    });
-
-    return res.json("OK");
+    const findMember = await groups.findOne({_id: req.params.id, 'members.user': req.body.userId});
+    if(findMember){
+        return res.json(findMember);
+    } else{
+        await groups.updateOne({_id: req.params.id}, {
+            $push: {
+                members: {user: req.body.userId}
+            }
+        });
+        return res.json('ok');
+    };
 });
 
 exports.delete_group = asyncHandler(async (req, res, next) => {
-    await groups.findOneAndUpdate({_id: req.params.id}, {
+    await groups.updateOne({_id: req.params.id}, {
         $pull: {
             members: {user: req.body.userId}
         }
