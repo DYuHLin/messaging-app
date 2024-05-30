@@ -19,10 +19,11 @@ function Friends() {
     const createChat = (userId) => {
         const decoded = jwtDecode(user.accessToken);
         axios.post('http://localhost:5000/api/chat', {user1: decoded.user._id, user2: userId}, {headers: {"Content-Type": "application/json"}})
+        axios.put('http://localhost:5000/api/register/deletefriend', {userId: decoded.user._id, friendId: userId}, {headers: {"Content-Type": "application/json"}})
     };
 
     const removeFriend = (userId) => {
-        
+        const decoded = jwtDecode(user.accessToken);
     };
 // console.log(users)
   return (
@@ -48,7 +49,7 @@ function Friends() {
                                 
                                     <div className={`user-options`}>                                   
                                     <ul className='options-user'>
-                                        <li><faIcons.FaUserFriends /></li>
+                                        <li onClick={() => removeFriend(res.user._id)}><IoIcons.IoMdRemoveCircle /></li>
                                         <li onClick={() => createChat(res.user._id)}><IoIcons.IoMdChatbubbles /></li>
                                     </ul>
                                 </div>

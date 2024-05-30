@@ -24,7 +24,7 @@ export const SidebarData = [
     },
     {
         title: 'Groups',
-        path: '/',
+        path: '/groups',
         icons: <faIcons.FaLayerGroup/>,
         cName: 'nav-text'
     },

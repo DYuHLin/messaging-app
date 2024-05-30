@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 function ChatBar({socket}) {
     const [chats, setChats] = useState(false);
+    const [groups, setGroups] = useState(false);
     const { user, setChat, chat, setMessages, messages, chatId } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
   

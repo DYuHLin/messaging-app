@@ -8,15 +8,15 @@ exports.create_group = asyncHandler(async (req, res, next) => {
 
         const group = new groups({
             members: [],
-            name: req.body.gname,
+            name: req.body.name,
             creator: req.body.userId
         });
-        group.members.push({user: req.body.userId});
+
         if(!errors.isEmpty()){
             return console.log(errors);
         } else {       
             await group.save();
-            return res.json('OK');
+            return res.json(group);
         };
         
     }catch(err){
