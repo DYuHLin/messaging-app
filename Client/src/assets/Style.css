@@ -153,6 +153,11 @@ h3{
   left: -20px;
 }
 
+.group-info{
+  display: flex;
+  flex-direction: column;
+}
+
 li{
   cursor: pointer;
   font-size: 28px;

@@ -9,6 +9,7 @@ import UsersList from './Pages/UsersList';
 import Friends from './Pages/Friends';
 import Group from './Pages/Group';
 import CreateGroup from './Pages/CreateGroup';
+import GroupPage from './Pages/GroupPage';
 
 function Router() {
     const { user, ProtectedRoutes } = useContext(UserContext);
@@ -25,6 +26,7 @@ function Router() {
                     <Route path='/friends' element={<Friends />}/>
                     <Route path='/groups' element={<Group />}/>
                     <Route path='/creategroup' element={<CreateGroup />}/>
+                    <Route path='/groups/:id' element={<GroupPage />}/>
                 </Route>
             </Route>
         )

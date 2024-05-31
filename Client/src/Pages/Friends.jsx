@@ -19,7 +19,7 @@ function Friends() {
     const removeFriend = (userId) => {
         const decoded = jwtDecode(user.accessToken);
     };
-// console.log(users)
+
   return (
     <section>
         <h1 className="register-title">Friends</h1>
