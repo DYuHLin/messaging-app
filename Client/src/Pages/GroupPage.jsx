@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import * as IoIcons from 'react-icons/io'
 import * as faIcons from 'react-icons/fa'
@@ -12,6 +12,7 @@ function GroupPage() {
   const [hidden, setHidden] = useState('hidden');
   const { user } = useContext(UserContext);
   const decodedUser = jwtDecode(user.accessToken);
+  const navigate = useNavigate();
 
   const id = useParams();
 
@@ -20,21 +21,25 @@ function GroupPage() {
     axios.put(`http://localhost:5000/api/group/${group._id}/add`, userAdd, {headers: { "Content-Type": "application/json" }})
        .then(res => setStatus(res.data))
         .catch(err => console.log(err));
+    setHidden('hidden');
 };
 
 const deleteGroup = () => {
-  axios.put(`http://localhost:5000/api/group/${group._id}/deletechat`, userAdd, {headers: { "Content-Type": "application/json" }})
+  axios.delete(`http://localhost:5000/api/group/${group._id}/deletegroup`, {headers: { "Content-Type": "application/json" }})
         .catch(err => console.log(err));
+  navigate('/groups');
 };
 
 const leaveGroup = (id) => {
-  axios.put(`http://localhost:5000/api/group/${id}/delete`, userAdd, {headers: { "Content-Type": "application/json" }})
+  axios.put(`http://localhost:5000/api/group/${group._id}/delete`, {userId: id}, {headers: { "Content-Type": "application/json" }})
         .catch(err => console.log(err));
+  navigate('/groups');
 };
 
 const removeUser = (id) => {
-  axios.put(`http://localhost:5000/api/group/${id}/delete`, userAdd, {headers: { "Content-Type": "application/json" }})
+  axios.put(`http://localhost:5000/api/group/${group._id}/delete`, {userId: id}, {headers: { "Content-Type": "application/json" }})
         .catch(err => console.log(err));
+  navigate(`/groups/${id}`);
 };
 
   useEffect(() => {
@@ -44,16 +49,16 @@ const removeUser = (id) => {
     axios({method: 'GET', url: `http://localhost:5000/api/register/getusers`}, {headers: { "Content-Type": "application/json" }})
       .then((res) => setUsers(res.data))
 },[]);
-  console.log(group)
+  // console.log(group)
   return (
     <section>
-      <h2>{group.name}</h2>
+      {group === false ? '' : <h2>{group.name}</h2>} 
       {
       group === false ? '' : decodedUser.user._id === group.creator._id ? <div className="admin-role">
-        <p onClick={() => createChat(member.user._id)}>Delete group</p>
+        <p onClick={() => deleteGroup()}>Delete group</p>
         <p onClick={() => setHidden(hidden == 'hidden' ? '' : 'hidden')}>Add Member</p>
       </div>   :
-      <p onClick={() => createChat(member.user._id)}>Leave group</p>
+      <p onClick={() => leaveGroup(decodedUser.user._id)}>Leave group</p>
       }   
       <div className="user-container">
         <div className="users">
@@ -92,7 +97,7 @@ const removeUser = (id) => {
                   {
                       decodedUser.user._id !== group.creator._id ? "" :
                       <ul className='options-user'>
-                        <li onClick={() => createChat(member.user._id)}><IoIcons.IoMdRemoveCircle /></li>
+                        <li onClick={() => removeUser(member.user._id)}><IoIcons.IoMdRemoveCircle /></li>
                       </ul>
                   }                                                       
                 </div>

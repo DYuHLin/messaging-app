@@ -158,6 +158,11 @@ h3{
   flex-direction: column;
 }
 
+.bar-options{
+  display: flex;
+  gap: 15px;
+}
+
 li{
   cursor: pointer;
   font-size: 28px;
