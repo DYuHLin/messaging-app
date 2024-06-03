@@ -37,6 +37,38 @@ exports.post_register = asyncHandler(async (req, res, next) => {
     };
 });
 
+exports.update_acc = asyncHandler(async (req, res, next) => {
+    try{
+        const user = await users.findOne({email: req.body.email});
+        if(user){
+            console.log("email taken");
+            return res.json("failed");
+        };
+
+        if(!user){
+            bcrypt.hash(req.body.password, 10, async(err, hashedPassword) => {
+                if(err){
+                    return next(err);
+                } else if(req.body.password !== req.body.confirmedPassword){
+                    return res.json("match"); 
+                } else {
+                    const account = new users({
+                        name: req.body.name,
+                        surname: req.body.surname,
+                        email: req.body.email,
+                        password: hashedPassword,
+                        _id: req.params.id
+                    });
+                    await users.findByIdAndUpdate(req.params.id, account, {});
+                    return res.json("ok");
+                };
+            });
+        }  
+    }catch(err){
+        next(err);
+    };
+});
+
 exports.profile_image = asyncHandler(async (req, res, next) => {
     try{
         const image = new images({
