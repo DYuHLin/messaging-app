@@ -2,11 +2,22 @@ import React, { useContext, useState } from 'react'
 import {jwtDecode} from 'jwt-decode'
 import UserContext from '../Context/UserContext'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+import ImageUpload from '../Components/ImageUpload'
+import { useNavigate } from 'react-router-dom'
 
 function Profile() {
-  const { user } = useContext(UserContext);
+  const { user, imageInfo } = useContext(UserContext);
   const [hidden, setHidden] = useState('hidden');
   const decoded = jwtDecode(user.accessToken);
+
+  const navigate = useNavigate();
+
+  const updateImg = (e) => {
+    e.preventDefault();
+    axios.put('http://localhost:5000/api/register/updateimg', {userId: decoded.user._id, imageId: imageInfo._id}, {headers: {"Content-Type": "application/json"}});
+    navigate('/');
+  };
 
   return (
     <section>
@@ -24,6 +35,14 @@ function Profile() {
       <div className="user-information">
         <div className="user-image">
           <img className='user-icon' src={decoded.user.profileImg.image} alt="user icon" />
+          <div className="update-img">
+
+            <form method='PUT' className='update-pic' onSubmit={updateImg}>
+              <ImageUpload />
+              <button type='submit' className='form-btn'>Update</button>
+            </form>
+
+          </div>
         </div>
         <div className="user-details">
           <p>Name: {decoded.user.name}</p>
@@ -31,6 +50,7 @@ function Profile() {
           <p>Email: {decoded.user.email}</p>
         </div>
       </div>
+      <button onClick={() => console.log(imageInfo)}>show</button>
     </section>
   )
 }

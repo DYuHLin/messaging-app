@@ -16,23 +16,9 @@ function ImageUpload() {
       data.readAsDataURL(e.target.files[0]);
     };
   
-    // const handleSubmit = async () => {
-    //   try{
-    //     const subImg = {image: img};
-    //     axios.post('http://localhost:5000/api/postimage', subImg)
-    //     .then((res) => {setImageInfo(res.data)})
-    //   }catch(err){
-    //     console.log(err);
-    //   }
-      
-    // };
-  
     return (
       <>
-      <div>
-        <input type="file" lable="Image" name="myFile" id="file-upload" accept='.jpeg, .png, .jpg' onChange={convertBase64}/>
-      </div>
-        
+        <input type="file" lable="Image" name="myFile" id="file-upload" accept='.jpeg, .png, .jpg' onChange={convertBase64}/>      
       </>
     )
 }

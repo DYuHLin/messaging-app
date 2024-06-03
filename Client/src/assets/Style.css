@@ -206,6 +206,16 @@ li{
 .user-image{
   height: 200px;
   height: 200px;
+  margin-bottom: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.update-pic{
+  display: flex;
+  gap: 20px;
 }
 
 .send-message{

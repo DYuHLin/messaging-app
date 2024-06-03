@@ -76,12 +76,17 @@ exports.profile_image = asyncHandler(async (req, res, next) => {
         });
 
         await image.save();
-        // console.log(image);
         return res.json(image);
 
     } catch(err){
         res.status(409).json({message: err.message});
     }
+});
+
+exports.update_image = asyncHandler(async (req, res, next) => {
+    await users.findOneAndUpdate(req.body.userId, {profileImg: req.body.imageId}, {});
+    return res.json('ok');
+    
 });
 
 exports.add_friend = asyncHandler(async (req, res, next) => {
