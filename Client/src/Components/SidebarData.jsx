@@ -36,7 +36,7 @@ export const SidebarData = [
     },
     {
         title: 'Profile',
-        path: '/',
+        path: '/yourprofile',
         icons: <AiIcons.AiFillHome />,
         cName: 'nav-text'
     },

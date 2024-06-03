@@ -124,8 +124,21 @@ h3{
   margin-bottom: 12px;
 }
 
+.admin-role{
+  margin-bottom: 20px;
+  display: flex;
+  gap: 20px;
+}
+
 .user-container{
   width: 65%;
+}
+
+.user-information{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .chat-bar{
@@ -183,6 +196,16 @@ li{
 .user-img{
   max-height: 100px;
   max-width: 50px;
+}
+
+.user-icon{
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.user-image{
+  height: 200px;
+  height: 200px;
 }
 
 .send-message{

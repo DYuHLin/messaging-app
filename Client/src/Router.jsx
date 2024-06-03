@@ -10,6 +10,8 @@ import Friends from './Pages/Friends';
 import Group from './Pages/Group';
 import CreateGroup from './Pages/CreateGroup';
 import GroupPage from './Pages/GroupPage';
+import Profile from './Pages/Profile';
+import ProfileEdit from './Pages/ProfileEdit';
 
 function Router() {
     const { user, ProtectedRoutes } = useContext(UserContext);
@@ -27,6 +29,8 @@ function Router() {
                     <Route path='/groups' element={<Group />}/>
                     <Route path='/creategroup' element={<CreateGroup />}/>
                     <Route path='/groups/:id' element={<GroupPage />}/>
+                    <Route path='/yourprofile' element={<Profile />}/>
+                    <Route path='/yourprofile/edit' element={<ProfileEdit />}/>
                 </Route>
             </Route>
         )
