@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import UserContext from '../Context/UserContext'
 import { jwtDecode } from 'jwt-decode'
@@ -11,11 +11,12 @@ function ChatBar({socket}) {
     const decoded = jwtDecode(user.accessToken);
   
     useEffect(() => {
-        const decoded = jwtDecode(user.accessToken);
             axios({method: "GET", url: `http://localhost:5000/api/chat/${decoded.user._id}`}, {headers: {"Content-Type": "application/json"}})
             .then(res => setChats(res.data)
             ).catch(err => console.log(err));  
+      },[]);
 
+      useEffect(() => {
             axios({method: 'GET', url: `http://localhost:5000/api/group/${decoded.user._id}/getgroups`}, {headers: { "Content-Type": "application/json" }})
             .then((res) => setGroups(res.data))
       },[]);

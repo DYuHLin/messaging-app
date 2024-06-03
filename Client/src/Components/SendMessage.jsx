@@ -34,6 +34,7 @@ function SendMessage({socket}) {
             .then((res) => {
               socket.emit('send_message', {message: res.data, chat: chatId.current})
               setMessages(content => [...content, res.data]);
+              console.log(res.data)
               return () => socket.off("message");
             })
           

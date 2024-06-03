@@ -19,11 +19,11 @@ function ChatBox({socket}) {
         <div className="messages">
           {messages.map((msg, index) => {
             return(
-              <div className={`msg ${decodedUser.user._id == msg.user._id ? 'you' : 'other'}`} key={index}>
+              <div className={`msg ${decodedUser.user._id == msg.user._id || decodedUser.user._id == msg.user ? 'you' : 'other'}`} key={index}>
                 <div className="msg-info">
 
-                  <div className={`msg-bubble ${decodedUser.user._id == msg.user._id ? 'you-bubble' : 'other-bubble'}`} >
-                    <span className="msg-name">{decodedUser.user._id == msg.user._id ? 'You' : msg.user.name + ' ' + msg.user.surname}</span>
+                  <div className={`msg-bubble ${decodedUser.user._id == msg.user._id || decodedUser.user._id == msg.user  ? 'you-bubble' : 'other-bubble'}`} >
+                    <span className="msg-name">{decodedUser.user._id == msg.user._id || decodedUser.user._id == msg.user ? 'You' : msg.user.name + ' ' + msg.user.surname}</span>
                     {
                       msg.content.trim() != '' ? <div className="msg-content">{msg.content}</div> : ''
                     }
