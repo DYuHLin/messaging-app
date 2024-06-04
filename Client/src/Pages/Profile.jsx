@@ -9,14 +9,26 @@ import { useNavigate } from 'react-router-dom'
 function Profile() {
   const { user, imageInfo } = useContext(UserContext);
   const [hidden, setHidden] = useState('hidden');
+  const [image, setImage] = useState(false);
+  const [img, setImg] = useState(false);
   const decoded = jwtDecode(user.accessToken);
 
   const navigate = useNavigate();
 
   const updateImg = (e) => {
     e.preventDefault();
-    axios.put('http://localhost:5000/api/register/updateimg', {userId: decoded.user._id, imageId: imageInfo._id}, {headers: {"Content-Type": "application/json"}});
+    axios.put(`http://localhost:5000/api/register/${decoded.user._id}/updateimg`, {imageId: image._id}, {headers: {"Content-Type": "application/json"}});
     navigate('/');
+  };
+
+  const convertBase64 = (e) => {
+    const data = new FileReader();
+    data.addEventListener('load', () => {
+      setImg(data.result);
+      axios.post('http://localhost:5000/api/postimage', {image: data.result}, {headers: { "Content-Type": "application/json" }})
+      .then((res) => {setImage(res.data)})
+    });
+    data.readAsDataURL(e.target.files[0]);
   };
 
   return (
@@ -38,7 +50,7 @@ function Profile() {
           <div className="update-img">
 
             <form method='PUT' className='update-pic' onSubmit={updateImg}>
-              <ImageUpload />
+              <input type="file" lable="Image" name="myFile" id="file-upload" accept='.jpeg, .png, .jpg' onChange={convertBase64}/>
               <button type='submit' className='form-btn'>Update</button>
             </form>
 

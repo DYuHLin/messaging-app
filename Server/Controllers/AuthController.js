@@ -84,7 +84,7 @@ exports.profile_image = asyncHandler(async (req, res, next) => {
 });
 
 exports.update_image = asyncHandler(async (req, res, next) => {
-    await users.findOneAndUpdate(req.body.userId, {profileImg: req.body.imageId}, {});
+    await users.updateOne({_id: req.params.id}, {$set: {profileImg: req.body.imageId}});
     return res.json('ok');
     
 });
