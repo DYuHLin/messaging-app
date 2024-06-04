@@ -25,13 +25,15 @@ function Friends() {
         <h1 className="register-title">Friends</h1>
         <div className="user-container">
             <div className="search-user">
-
+                <input type="text" onChange={(e) => {setSearch(e.target.value)}} placeholder='Search friends'/>
             </div>
             <div className="users">
                 {
                   decodedUser.user.friends === false ? (<p>There are no friends</p>):
                   decodedUser.user.friends < 0 ? (<p>There are no friends</p>):
-                  decodedUser.user.friends.map((res, key) => {
+                  decodedUser.user.friends.filter((item) => {
+                    return search.toLocaleLowerCase() === '' ? item : item.user.name.toLocaleLowerCase().includes(search);
+                    }).map((res, key) => {
                         return (
                             <div className="user" key={key}>
                                 <div className="user-info">

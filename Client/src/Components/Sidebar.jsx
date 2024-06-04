@@ -1,19 +1,37 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './Sidebar.css'
-import { Link } from 'react-router-dom'
-import * as faIcons from 'react-icons/fa'
+import { Link, useNavigate } from 'react-router-dom'
+import * as IoIcons from 'react-icons/io'
 import * as AiIcons from 'react-icons/ai'
 import { SidebarData } from './SidebarData'
 import * as RiIcons from 'react-icons/ri'
 import { IconContext } from 'react-icons/lib'
+import {toast} from 'react-toastify'
+import UserContext from '../Context/UserContext'
+import axios from 'axios'
 
 function Sidebar() {
     const [sidebar, setSidebar] = useState(false);
+    const { user, setUser } = useContext(UserContext);
 
     const showSidebar = () => {
         //changes to the opposite of whatever boolean value is present
         setSidebar(!sidebar);
     };
+
+    const navigate = useNavigate();
+
+    const logout = async () => {
+        const token = { token: user.refreshToken };
+        axios.post(`http://localhost:5000/api/login/logout`, token, {
+            headers: {
+                "Content-Type": "application/json",
+                }
+        });
+        setUser(false);
+        navigate('/ogin');
+        toast.success("You have logged out successfully");
+      };
 
   return (
     <>
@@ -40,6 +58,12 @@ function Sidebar() {
                         </li>
                     )
                 })}
+                <li className='nav-text'>
+                    <div className="logout" onClick={logout}>
+                        <IoIcons.IoMdLogOut />
+                        <span>Logout</span>
+                    </div>
+                </li>
             </ul>
         </nav>
     </IconContext.Provider>

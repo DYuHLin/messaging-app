@@ -22,7 +22,7 @@ function UsersList() {
 
     const addFriend = (userId) => {
         const decoded = jwtDecode(user.accessToken);
-        axios.put('http://localhost:5000/api/register/addfriend', {userId: decoded.user._id, friendId: userId}, {headers: {"Content-Type": "application/json"}})
+        axios.put(`http://localhost:5000/api/register/${decoded.user._id}/addfriend`, {friendId: userId}, {headers: {"Content-Type": "application/json"}})
     };
 
   return (
@@ -30,12 +30,14 @@ function UsersList() {
         <h1 className="register-title">Users</h1>
         <div className="user-container">
             <div className="search-user">
-
+                <input type="text" onChange={(e) => {setSearch(e.target.value)}} placeholder='Search users'/>
             </div>
             <div className="users">
                 {
                     users === false ? (<p>There are no users</p>):
-                    users.map((res, key) => {
+                    users.filter((item) => {
+                        return search.toLocaleLowerCase() === '' ? item : item.name.toLocaleLowerCase().includes(search);
+                    }).map((res, key) => {
                         return (
                             <div className="user" key={key}>
                                 <div className="user-info">

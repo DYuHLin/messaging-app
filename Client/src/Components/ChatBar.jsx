@@ -7,6 +7,7 @@ function ChatBar({socket}) {
     const [chats, setChats] = useState(false);
     const [groups, setGroups] = useState(false);
     const [hidden, setHidden] = useState('Chats');
+    const [search, setSearch] = useState('');
     const { user, setChat, setMessages, messages, chatId } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
   
@@ -40,7 +41,7 @@ function ChatBar({socket}) {
   return (
     <div className="chat-side">
         <h3>Chats</h3>
-        <input type="text" placeholder='Search Chats' className='chat-bar'/>
+        <input type="text" placeholder='Search Chats' className='chat-bar' onChange={(e) => setSearch(e.target.value)}/>
 
         <div className="users-chats">
             <div className="bar-options">
@@ -48,7 +49,9 @@ function ChatBar({socket}) {
             </div>
             
             {
-              chats === false ? <p>You do not have chats...</p> : chats.map((chat, id) => {
+              chats === false ? <p>You do not have chats...</p> : chats.filter((item) => {
+                return search.toLocaleLowerCase() === '' ? item : item.creator.name.toLocaleLowerCase().includes(search) || item.user.name.toLocaleLowerCase().includes(search);
+                }).map((chat, id) => {
                 return(
                     
                     chat.user._id == decoded.user._id ? (
@@ -75,7 +78,9 @@ function ChatBar({socket}) {
             }
             {
             groups == false ? <p>You have no groups</p> :
-            groups.map((group, id) => {
+            groups.filter((item) => {
+              return search.toLocaleLowerCase() === '' ? item : item.name.toLocaleLowerCase().includes(search);
+              }).map((group, id) => {
               return (
                 <div className={`user ${hidden == 'Chats' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(group._id)}>
                     <div className="user-info">

@@ -7,6 +7,7 @@ import {jwtDecode} from 'jwt-decode'
 function Group() {
   const { user } = useContext(UserContext);
   const [groups, setGroups] = useState(false);
+  const [search, setSearch] = useState('');
   const decoded = jwtDecode(user.accessToken);
 
   useEffect(() => {
@@ -23,10 +24,15 @@ const show = () => {
       <h1>Group</h1>
       <Link to='/creategroup'>Create Group</Link>
       <div className="user-container">
+      <div className="search-user">
+        <input type="text" onChange={(e) => {setSearch(e.target.value)}} placeholder='Search groups'/>
+      </div>
         <div className="users">
           {
             groups == false ? <p>You have no groups</p> :
-            groups.map((group, index) => {
+            groups.filter((item) => {
+              return search.toLocaleLowerCase() === '' ? item : item.name.toLocaleLowerCase().includes(search);
+            }).map((group, index) => {
               return (
                 <Link key={index} to={`/groups/${group._id}`}>
                   <div className="user">

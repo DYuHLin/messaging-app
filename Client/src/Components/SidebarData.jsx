@@ -11,9 +11,15 @@ export const SidebarData = [
         cName: 'nav-text'
     },
     {
+        title: 'Chats',
+        path: '/chats',
+        icons: <IoIcons.IoMdChatboxes />,
+        cName: 'nav-text'
+    },
+    {
         title: 'Users',
         path: '/users',
-        icons: <IoIcons.IoMdChatboxes />,
+        icons: <faIcons.FaUser />,
         cName: 'nav-text'
     },
     {
@@ -26,12 +32,6 @@ export const SidebarData = [
         title: 'Groups',
         path: '/groups',
         icons: <faIcons.FaLayerGroup/>,
-        cName: 'nav-text'
-    },
-    {
-        title: 'Logout',
-        path: '/',
-        icons: <IoIcons.IoMdLogOut />,
         cName: 'nav-text'
     },
     {

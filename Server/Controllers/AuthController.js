@@ -82,11 +82,11 @@ exports.update_image = asyncHandler(async (req, res, next) => {
 });
 
 exports.add_friend = asyncHandler(async (req, res, next) => {
-    const findFriend = await users.findOne({_id: req.body.userId, 'friends.user': req.body.friendId});
+    const findFriend = await users.findOne({_id: req.params.id, 'friends.user': req.body.friendId});
     if(findFriend){
         return res.json(findFriend);
     } else{
-        await users.updateOne({_id: req.body.userId}, {$push: {friends: {user: req.body.friendId}}});
+        await users.updateOne({_id: req.params.id}, {$push: {friends: {user: req.body.friendId}}});
         return res.json('ok');
     }
 });
