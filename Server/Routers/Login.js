@@ -4,7 +4,7 @@ const login = require('../Controllers/LoginController');
 const router = express.Router();
 
 router.post('/', login.post_login);
-router.post('/logut', login.post_logout);
+router.post('/logout', login.post_logout);
 router.delete('/delete', login.post_delete);
 
 module.exports = router;

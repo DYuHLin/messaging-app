@@ -6,24 +6,23 @@ import axios from 'axios'
 import {toast} from 'react-toastify'
 
 function ProfileEdit() {
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
 
     const [name, setName] = useState(decoded.user.name);
     const [surname, setSurname] = useState(decoded.user.surname);
     const [email, setEmail] = useState(decoded.user.email);
-    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [confirmedPassword, setConfirmedPassword] = useState('');
 
     const navigate = useNavigate();
 
     const submitForm = (e) => {
         e.preventDefault();
+        const token = { token: user.refreshToken };
         const newName = name.replace(/\s/g, "");
         const newSurname = surname.replace(/\s/g, "");
 
-        const updated = {name: newName, surname: newSurname, email, password, confirmedPassword};
+        const updated = {name: newName, surname: newSurname, email};
         try{
             axios.put(`http://localhost:5000/api/register/${decoded.user._id}`, updated, {headers: { "Content-Type": "application/json" }})
             .then(res => res.data)
@@ -35,12 +34,19 @@ function ProfileEdit() {
                 setError("your passwords do not match.");
                 toast.error("There was an error");
                 } else if(status === "ok"){
-                navigate("/");
-                toast.success("You have registered successfully");
+                    axios.post(`http://localhost:5000/api/login/logout`, token, {
+                        headers: {
+                            "Content-Type": "application/json"
+                            }
+                        });
+                    setUser(false);
+                    navigate('/login');
+                    toast.success("You have registered successfully");
                 };
                 console.log(status)
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));    
+
         }catch(err){
         console.log(err);
         };  
@@ -48,13 +54,11 @@ function ProfileEdit() {
 
   return (
     <section>
-        <h1 className="register-title">Edit your details</h1>
+        <h1 className="register-title">Edit your profile</h1>
         <form method='POST' className='register-form' onSubmit={submitForm}>
             <input type="text" name='name' id='name' className='name' value={name} onChange={(e) => setName(e.target.value)} placeholder='Name'/>
             <input type="text" name='surname' id='surname' className='surname' value={surname} onChange={(e) => setSurname(e.target.value)} placeholder='Surname'/>
             <input type="email" name='email' id='email' className='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email'/>
-            <input type="password" name='password' id='password' className='password' onChange={(e) => setPassword(e.target.value)} placeholder='New password' minLength={6}/>
-            <input type="password" name='confirmedPassword' id='confirmedPassword' className='confirmedPassword' placeholder='Confirm password' onChange={(e) => setConfirmedPassword(e.target.value)} minLength={6}/>
             <button type='submit' className='form-btn'>Submit</button>
         </form>
         <button onClick={() => console.log(imageInfo)}>Show</button>

@@ -46,24 +46,16 @@ exports.update_acc = asyncHandler(async (req, res, next) => {
         };
 
         if(!user){
-            bcrypt.hash(req.body.password, 10, async(err, hashedPassword) => {
-                if(err){
-                    return next(err);
-                } else if(req.body.password !== req.body.confirmedPassword){
-                    return res.json("match"); 
-                } else {
-                    const account = new users({
-                        name: req.body.name,
-                        surname: req.body.surname,
-                        email: req.body.email,
-                        password: hashedPassword,
-                        _id: req.params.id
-                    });
-                    await users.findByIdAndUpdate(req.params.id, account, {});
-                    return res.json("ok");
-                };
-            });
-        }  
+            await users.updateOne({_id: req.params.id}, {$set: {
+                name: req.body.name,
+                surname: req.body.surname,
+                email: req.body.email}});
+
+            return res.json("ok");
+        } else {
+            return res.json('exist');
+        }
+         
     }catch(err){
         next(err);
     };

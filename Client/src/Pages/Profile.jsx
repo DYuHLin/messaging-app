@@ -3,7 +3,6 @@ import {jwtDecode} from 'jwt-decode'
 import UserContext from '../Context/UserContext'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import ImageUpload from '../Components/ImageUpload'
 import { useNavigate } from 'react-router-dom'
 
 function Profile() {
@@ -18,7 +17,16 @@ function Profile() {
   const updateImg = (e) => {
     e.preventDefault();
     axios.put(`http://localhost:5000/api/register/${decoded.user._id}/updateimg`, {imageId: image._id}, {headers: {"Content-Type": "application/json"}});
-    navigate('/');
+
+    const token = { token: user.refreshToken };
+      axios.post(`http://localhost:5000/api/login/logout`, token, {
+          headers: {
+              "Content-Type": "application/json",
+              "authorization": "Bearer " + user.accessToken
+              }
+      });
+      setUser(false);
+    navigate('/login');
   };
 
   const convertBase64 = (e) => {
