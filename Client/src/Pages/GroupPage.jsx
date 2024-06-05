@@ -4,22 +4,32 @@ import axios from 'axios'
 import * as IoIcons from 'react-icons/io'
 import * as faIcons from 'react-icons/fa'
 import UserContext from '../Context/UserContext'
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { jwtDecode } from 'jwt-decode'
 
 function GroupPage() {
   const [group, setGroup] = useState(false);
   const [users, setUsers] = useState(false);
+  const [status, setStatus] = useState('');
   const [hidden, setHidden] = useState('hidden');
   const { user } = useContext(UserContext);
   const decodedUser = jwtDecode(user.accessToken);
   const navigate = useNavigate();
-
   const id = useParams();
 
   const addMembers = (id) => {
     const userAdd = {userId: id}
     axios.put(`http://localhost:5000/api/group/${group._id}/add`, userAdd, {headers: { "Content-Type": "application/json" }})
        .then(res => setStatus(res.data))
+       .then(() => {
+          if(status == 'ok'){
+            toast.success("User added successfully");
+            navigate('/groups');
+        } else if(status == 'error'){
+            toast.error("User already in this group");
+        };
+       })
         .catch(err => console.log(err));
     setHidden('hidden');
 };
@@ -27,19 +37,22 @@ function GroupPage() {
 const deleteGroup = () => {
   axios.delete(`http://localhost:5000/api/group/${group._id}/deletegroup`, {headers: { "Content-Type": "application/json" }})
         .catch(err => console.log(err));
-  navigate('/groups');
+        toast.success("Group deleted successfully");
+        navigate('/groups');
 };
 
 const leaveGroup = (id) => {
   axios.put(`http://localhost:5000/api/group/${group._id}/delete`, {userId: id}, {headers: { "Content-Type": "application/json" }})
         .catch(err => console.log(err));
-  navigate('/groups');
+        toast.success("Group exited successfully");
+        navigate('/');
 };
 
 const removeUser = (id) => {
   axios.put(`http://localhost:5000/api/group/${group._id}/delete`, {userId: id}, {headers: { "Content-Type": "application/json" }})
         .catch(err => console.log(err));
-  navigate(`/groups/${id}`);
+        toast.success("Member removed successfully");
+        navigate(`/groups/${id}`);
 };
 
   useEffect(() => {
@@ -49,7 +62,7 @@ const removeUser = (id) => {
     axios({method: 'GET', url: `http://localhost:5000/api/register/getusers`}, {headers: { "Content-Type": "application/json" }})
       .then((res) => setUsers(res.data))
 },[]);
-  // console.log(group)
+
   return (
     <section>
       {group === false ? '' : <h2>{group.name}</h2>} 

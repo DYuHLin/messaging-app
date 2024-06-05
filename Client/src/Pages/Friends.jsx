@@ -3,20 +3,27 @@ import axios from 'axios'
 import * as IoIcons from 'react-icons/io'
 import UserContext from '../Context/UserContext'
 import {jwtDecode} from 'jwt-decode'
+import { useNavigate } from 'react-router-dom'
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Friends() {
   const { user } = useContext(UserContext);
     const [search, setSearch] = useState('');
+    const navigate = useNavigate();
     const decodedUser = jwtDecode(user.accessToken);
 
     const createChat = (userId) => {
         const decoded = jwtDecode(user.accessToken);
-        axios.post('http://localhost:5000/api/chat', {user1: decoded.user._id, user2: userId}, {headers: {"Content-Type": "application/json"}})
-        axios.put('http://localhost:5000/api/register/deletefriend', {userId: decoded.user._id, friendId: userId}, {headers: {"Content-Type": "application/json"}})
+        axios.post('http://localhost:5000/api/chat', {user1: decoded.user._id, user2: userId}, {headers: {"Content-Type": "application/json"}});
+        navigate('/');
+        toast.success('Chat created');
     };
 
     const removeFriend = (userId) => {
-        const decoded = jwtDecode(user.accessToken);
+        axios.put(`http://localhost:5000/api/register/${decodedUser.user._id}/deletefriend`, {friendId: userId}, {headers: {"Content-Type": "application/json"}});
+        navigate('/');
+        toast.success('Friend removed');
     };
 
   return (

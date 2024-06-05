@@ -187,6 +187,10 @@ h3{
   background-color: #0f1952;
 }
 
+.added-members{
+  display: flex;
+}
+
 .user-options{
   background-color: #0f1952;
   padding: 15px;

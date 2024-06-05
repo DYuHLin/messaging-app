@@ -38,7 +38,7 @@ function Login() {
     <section>
       <h1 className='register-title'>Login</h1>
       <form method="POST" className='register-form' onSubmit={handleSubmit}>
-          <input type="text" required name='email' id='email' className='email' onChange={(e) => setEmail(e.target.value)} placeholder='Email'/>
+          <input type='email' required name='email' id='email' className='email' onChange={(e) => setEmail(e.target.value)} placeholder='Email'/>
           <input type="password" required name='password' id='password' className='password' onChange={(e) => setPassword(e.target.value)} placeholder='Password'/>
           <button className='form-btn'>Login</button>
         </form>

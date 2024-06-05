@@ -1,25 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import UserContext from '../Context/UserContext'
 import axios from 'axios'
 import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { Link } from 'react-router-dom'
 import * as faIcons from 'react-icons/fa'
 import {jwtDecode} from 'jwt-decode'
-import ImageUpload from '../Components/ImageUpload'
 
 function CreateGroup() {
     const [name, setName] = useState('');
     const [hidden, setHidden] = useState('');
     const [group, setGroup] = useState('');
     const [status, setStatus] = useState('');
+    const [image, setImage] = useState({_id: "66423dd5b9c4d29102ffef31"});
     const [users, setUsers] = useState(false);
-    const { user, imageInfo } = useContext(UserContext);
+    const { user } = useContext(UserContext);
+    const decoded = jwtDecode(user.accessToken);
+    const [members, setMembers] = useState([`${decoded.user.name} ${decoded.user.surname}`]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         try{
-            const decoded = jwtDecode(user.accessToken);
-            const group = {name: name, id: decoded.user._id, image: imageInfo};
+            const group = {name: name, id: decoded.user._id, image: image._id};
             axios.post(`http://localhost:5000/api/group`, group, {headers: { "Content-Type": "application/json" }})
             .then(res => setGroup(res.data))
                 .catch(err => console.log(err));
@@ -29,30 +31,48 @@ function CreateGroup() {
         }catch(err){
         console.log(err);
         };
-
+        toast.success("Group created successfully");
         setHidden('hidden');
+
     };
 
-    const addMembers = (id) => {
+    const addMembers = (id, name, surname) => {
         const userAdd = {userId: id}
         axios.put(`http://localhost:5000/api/group/${group._id}/add`, userAdd, {headers: { "Content-Type": "application/json" }})
            .then(res => setStatus(res.data))
+           .then(() => {
+            if(status == 'ok'){
+                toast.success("User added successfully");
+                setMembers((current) => [...current, `${name} ${surname}`]);
+            } else if(status == 'error'){
+                toast.error("User already in this group");
+            };
+           })
             .catch(err => console.log(err))
     };
 
-    const show = () => {
-        console.log(group)
-    }
+    const convertBase64 = (e) => {
+        const data = new FileReader();
+        data.addEventListener('load', () => {
+          axios.post('http://localhost:5000/api/postimage', {image: data.result}, {headers: { "Content-Type": "application/json" }})
+          .then((res) => {setImage(res.data)})
+        });
+        data.readAsDataURL(e.target.files[0]);
+      };
 
   return (
     <section>
         <h3>Create Group</h3>
         <form method='POST' onSubmit={handleSubmit} className={`register-form ${hidden}`}>
                 <input type="text" required name='name' id='name' className='name' onChange={(e) => setName(e.target.value)} placeholder='Name'/>
-                <ImageUpload />
+                <input type="file" lable="Image" name="myFile" id="file-upload" accept='.jpeg, .png, .jpg' onChange={convertBase64}/>
                 <button className='form-btn'>Create Group</button>
         </form>
         <div className="user-container">
+            <div className={`added-members ${hidden == '' ? 'hidden' : ''}`}>
+                <p>{`${'Members:' + ' '}`}</p>
+                {members.map((res, id) => {return (<p key={id}>{res}, </p>)})}
+            </div>
             <div className="users">
             {
             users === false ? '':
@@ -66,7 +86,7 @@ function CreateGroup() {
                                     <span>{res.name + " " + res.surname}</span>
                                 </div>                                              
                                 <ul className='options-user'>
-                                        <li onClick={() => addMembers(res._id)}><faIcons.FaPlus /></li>
+                                        <li onClick={() => addMembers(res._id, res.name, res.surname)}><faIcons.FaPlus /></li>
                                 </ul>
                             </div>
                             )
@@ -74,7 +94,6 @@ function CreateGroup() {
                     }
             </div>
         </div>
-        <button onClick={show}>show</button>
         <Link to='/groups'>Done</Link>
     </section>
   )

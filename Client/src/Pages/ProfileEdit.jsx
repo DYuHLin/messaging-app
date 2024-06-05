@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import {jwtDecode} from 'jwt-decode'
 import axios from 'axios'
 import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function ProfileEdit() {
     const { user, setUser } = useContext(UserContext);
@@ -12,7 +13,6 @@ function ProfileEdit() {
     const [name, setName] = useState(decoded.user.name);
     const [surname, setSurname] = useState(decoded.user.surname);
     const [email, setEmail] = useState(decoded.user.email);
-    const [error, setError] = useState('');
 
     const navigate = useNavigate();
 
@@ -28,11 +28,7 @@ function ProfileEdit() {
             .then(res => res.data)
             .then(status => {
                 if(status === "failed"){
-                setError("This username already exists.");
-                toast.error("There was an error");
-                } else if(status === "match"){
-                setError("your passwords do not match.");
-                toast.error("There was an error");
+                toast.error("This email already exists.");
                 } else if(status === "ok"){
                     axios.post(`http://localhost:5000/api/login/logout`, token, {
                         headers: {
@@ -41,7 +37,7 @@ function ProfileEdit() {
                         });
                     setUser(false);
                     navigate('/login');
-                    toast.success("You have registered successfully");
+                    toast.success("You have updated your details successfully");
                 };
                 console.log(status)
             })

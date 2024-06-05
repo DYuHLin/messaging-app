@@ -4,6 +4,8 @@ import UserContext from '../Context/UserContext'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Profile() {
   const { user, imageInfo } = useContext(UserContext);
@@ -26,7 +28,8 @@ function Profile() {
               }
       });
       setUser(false);
-    navigate('/login');
+      toast.success('You have updated your profile icon.');
+      navigate('/login');
   };
 
   const convertBase64 = (e) => {

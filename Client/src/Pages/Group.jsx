@@ -15,14 +15,11 @@ function Group() {
         .then((res) => setGroups(res.data))
 },[]);
 
-const show = () => {
-  console.log(groups)
-}
-
   return (
     <section>
       <h1>Group</h1>
       <Link to='/creategroup'>Create Group</Link>
+      <br />
       <div className="user-container">
       <div className="search-user">
         <input type="text" onChange={(e) => {setSearch(e.target.value)}} placeholder='Search groups'/>
@@ -51,7 +48,6 @@ const show = () => {
             }
         </div>
       </div>
-        <button onClick={show}>show</button>
     </section>
   )
 }

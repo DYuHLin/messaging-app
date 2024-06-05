@@ -92,12 +92,11 @@ exports.add_friend = asyncHandler(async (req, res, next) => {
 });
 
 exports.delete_friend = asyncHandler(async (req, res, next) => {
-    await users.findOneAndUpdate({_id: req.body.userId}, {
+    await users.findOneAndUpdate({_id: req.params.id}, {
         $pull: {
             friends: {user: req.body.friendId}
         }
     });
-
     return res.json('ok');
 });
 
