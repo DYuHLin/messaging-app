@@ -2,7 +2,8 @@ import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {toast} from 'react-toastify'
-import UserContext from '../Context/UserContext';
+import UserContext from '../Context/UserContext'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ function Login() {
     e.preventDefault();
     try{
       const res = await axios.post(`http://localhost:5000/api/login`, {email, password}, {headers: { "Content-Type": "application/json" }});
-      if(res.data === "name"){
+      if(res.data === "email"){
         setError("This email does not exist.");
         toast.error("There was an error");
       } else if(res.data === "password"){

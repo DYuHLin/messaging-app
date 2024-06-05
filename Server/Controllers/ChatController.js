@@ -33,7 +33,7 @@ exports.post_chat = asyncHandler(async (req, res, next) => {
 });
 
 exports.delete_chat = asyncHandler(async (req, res, next) => {
-    await chats.findByIdAndDelete(req.body.id);
-    await messages.findByIdAndDelete({reply: req.body.id});
+    await chats.findByIdAndDelete(req.params.id);
+    await messages.findOneAndDelete({reply: req.params.id});
     return res.json('OK');
 });

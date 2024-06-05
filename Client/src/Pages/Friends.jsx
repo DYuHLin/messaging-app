@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import * as IoIcons from 'react-icons/io'
-import * as faIcons from 'react-icons/fa'
 import UserContext from '../Context/UserContext'
 import {jwtDecode} from 'jwt-decode'
 

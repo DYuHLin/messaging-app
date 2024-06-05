@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import axios from 'axios'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import './assets/Style.css'
 import Sidebar from './Components/Sidebar'
 
@@ -11,6 +12,17 @@ function App() {
       <main>
         <Outlet />
       </main>
+      <ToastContainer position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition: Bounce/>
     </div>
   )
 }

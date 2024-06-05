@@ -3,56 +3,39 @@ import axios from 'axios'
 import UserContext from '../Context/UserContext'
 import { jwtDecode } from 'jwt-decode'
 
-function ChatBar({socket}) {
-    const [chats, setChats] = useState(false);
-    const [groups, setGroups] = useState(false);
+function ChatBar({socket, groups, chats}) {
     const [hidden, setHidden] = useState('Chats');
     const [search, setSearch] = useState('');
-    const { user, setChat, setMessages, messages, chatId } = useContext(UserContext);
+    const { user, setChat, setMessages, messages, chatId, setName, valid, setValid } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
-  
-    useEffect(() => {
-            axios({method: "GET", url: `http://localhost:5000/api/chat/${decoded.user._id}`}, {headers: {"Content-Type": "application/json"}})
-            .then(res => setChats(res.data)
-            ).catch(err => console.log(err));  
-            socket.emit('join_chat', chatId.current); 
-      },[]);
 
-      useEffect(() => {
-            axios({method: 'GET', url: `http://localhost:5000/api/group/${decoded.user._id}/getgroups`}, {headers: { "Content-Type": "application/json" }})
-            .then((res) => setGroups(res.data))
-      },[]);
-
-      const show = () => {
-        console.log(chatId.current)
-        console.log(messages)
-        console.log(groups)
-      }
-      const selectChat = (id) => {
+      const selectChat = (id, name, surname) => {
         setChat(id);
+        setName(name + ' ' + surname);
+        setValid('valid');
         chatId.current = id;
         axios({method: "GET", url: `http://localhost:5000/api/message/${id}`}, {headers: {"Content-Type": "application/json"}})
             .then(res => setMessages(res.data)
             ).catch(err => console.log(err));  
         socket.emit('join_chat', chatId.current); 
       };
+
   return (
-    <div className="chat-side">
+    <div className={`chat-side ${valid == 'valid' ? 'hidden' : ''}`}>
         <h3>Chats</h3>
         <input type="text" placeholder='Search Chats' className='chat-bar' onChange={(e) => setSearch(e.target.value)}/>
 
         <div className="users-chats">
             <div className="bar-options">
-                <p className="bar-chats" onClick={() => {setHidden(hidden == 'Chats' ? 'Groups' : 'Chats')}}>{hidden}</p>
+                <button className="bar-chats" onClick={() => {setHidden(hidden == 'Chats' ? 'Groups' : 'Chats')}}>{hidden}</button>
             </div>        
             {
               chats === false ? <p>You do not have chats...</p> : chats.filter((item) => {
                 return search.toLocaleLowerCase() === '' ? item : item.creator.name.toLocaleLowerCase().includes(search) || item.user.name.toLocaleLowerCase().includes(search);
                 }).map((chat, id) => {
-                return(
-                    
+                return(    
                     chat.user._id == decoded.user._id ? (
-                            <div className={`user ${hidden == 'Groups' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(chat._id)}>
+                            <div className={`user ${hidden == 'Groups' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(chat._id, chat.creator.name, chat.creator.surname)}>
                                 <div className="user-info">
                                     <div className="img-container">
                                         <img className='user-img' src={chat.creator.profileImg.image} alt="user icon" /> 
@@ -61,7 +44,7 @@ function ChatBar({socket}) {
                                 </div>                              
                             </div>
                     ) : chat.creator._id == decoded.user._id ? (
-                            <div className={`user ${hidden == 'Groups' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(chat._id)}>
+                            <div className={`user ${hidden == 'Groups' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(chat._id, chat.user.name, chat.user.surname)}>
                                 <div className="user-info">
                                     <div className="img-container">
                                         <img className='user-img' src={chat.user.profileImg.image} alt="user icon" /> 
@@ -79,7 +62,7 @@ function ChatBar({socket}) {
               return search.toLocaleLowerCase() === '' ? item : item.name.toLocaleLowerCase().includes(search);
               }).map((group, id) => {
               return (
-                <div className={`user ${hidden == 'Chats' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(group._id)}>
+                <div className={`user ${hidden == 'Chats' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(group._id, group.name, '')}>
                     <div className="user-info">
                         <div className="img-container">
                             <img className='user-img' src={group.profileImg.image} alt="user icon" /> 
@@ -91,7 +74,6 @@ function ChatBar({socket}) {
             })
             }
         </div>
-        <button onClick={show}>show</button> 
     </div>
   )
 }

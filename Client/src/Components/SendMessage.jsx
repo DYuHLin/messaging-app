@@ -1,11 +1,9 @@
 import React, { useContext, useRef, useState } from 'react'
 import * as faIcons from 'react-icons/fa'
 import * as IoIcons from 'react-icons/io'
-import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import UserContext from '../Context/UserContext'
 import { jwtDecode } from 'jwt-decode'
-import { io } from 'socket.io-client'
 
 function SendMessage({socket}) {
     const [link, setLink] = useState('');
@@ -35,7 +33,8 @@ function SendMessage({socket}) {
             .then((res) => {
               socket.emit('send_message', {message: res.data, chat: chatId.current})
               setMessages(content => [...content, res.data]);
-              console.log(res.data)
+              setContent('');
+              setLink('');
               return () => socket.off("message");
             })
           
@@ -58,8 +57,8 @@ function SendMessage({socket}) {
 
   return (
     <div className="send-message">
-        <input type="text" required name='name' id='name' className={`message-input ${hide}`} autoComplete='off' onChange={(e) => setContent(e.target.value)} placeholder='Send a message'/>
-        <input type="text" className={`${hidden}`} placeholder='Send a link' id='link' onChange={(e) => setLink(e.target.value)} autoComplete='off'/>
+        <input type="text" required name='name' id='name' className={`message-input ${hide}`} autoComplete='off' value={content} onChange={(e) => setContent(e.target.value)} placeholder='Send a message'/>
+        <input type="text" className={`${hidden}`} placeholder='Send a link' id='link' value={link} onChange={(e) => setLink(e.target.value)} autoComplete='off'/>
         <div className="img-upload">
         <label htmlFor="img" className='img-label'><faIcons.FaImage className='img-icon' /></label>
         <input type="file" name="img" id="img" onChange={convertImage}/>

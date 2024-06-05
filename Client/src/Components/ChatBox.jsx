@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import UserContext from '../Context/UserContext'
 import SendMessage from './SendMessage'
+import * as RiIcons from 'react-icons/ri'
 import {jwtDecode} from 'jwt-decode'
 
 function ChatBox({socket}) {
-  const { user, messages, setMessages } = useContext(UserContext);
+  const { user, messages, setMessages, name, setValid, setChat, valid } = useContext(UserContext);
   const [msg, setMsg] = useState('');
   const decodedUser = jwtDecode(user.accessToken);
   const lastMessage = useRef(null);
@@ -19,8 +20,17 @@ function ChatBox({socket}) {
     lastMessage.current?.scrollIntoView();
   }, [messages]);
 
+  const backChats = () => {
+    setValid('invalid');
+    setChat(false);
+  };
+
   return (
-    <div className="chat-box">
+    <div className={`chat-box ${valid == 'invalid' ? 'hidden' : ''}`}>
+      <div className="chat-header">
+        <RiIcons.RiArrowLeftDoubleFill className='menu-bars' onClick={backChats}/>
+        <h3 className='box-title'>{name}</h3>
+      </div>
         <div className="messages">
           {messages.map((msg, index) => {
             return(
