@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState } from 'react'
 import * as faIcons from 'react-icons/fa'
+import * as IoIcons from 'react-icons/io'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import UserContext from '../Context/UserContext'
@@ -57,20 +58,17 @@ function SendMessage({socket}) {
 
   return (
     <div className="send-message">
-
-        <input type="text" required name='name' id='name' className={`message-input ${hide}`} onChange={(e) => setContent(e.target.value)} placeholder='Send a message'/>
-        <input type="text" className={`${hidden}`} placeholder='Send a link' id='link' onChange={(e) => setLink(e.target.value)}/>
+        <input type="text" required name='name' id='name' className={`message-input ${hide}`} autoComplete='off' onChange={(e) => setContent(e.target.value)} placeholder='Send a message'/>
+        <input type="text" className={`${hidden}`} placeholder='Send a link' id='link' onChange={(e) => setLink(e.target.value)} autoComplete='off'/>
         <div className="img-upload">
         <label htmlFor="img" className='img-label'><faIcons.FaImage className='img-icon' /></label>
         <input type="file" name="img" id="img" onChange={convertImage}/>
         </div>
         <div className="img-upload">
-        <label htmlFor="link" className='img-label' onClick={showLink}><faIcons.FaLink className='img-icon' /></label>
-        
-        </div>
-        
-        
-        <button className='send-message-btn' onClick={sendMessage}>Send Message</button>
+        <label htmlFor="link" className='img-label' onClick={showLink}>{
+        hidden == 'hidden' ? <faIcons.FaLink className='img-icon' /> : <faIcons.FaPenFancy className='img-icon' />}</label>
+        </div>      
+        <button className='send-message-btn' onClick={sendMessage}><IoIcons.IoMdSend className='img-icon' /></button>
     </div>
   )
 }

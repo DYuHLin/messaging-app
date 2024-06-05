@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import UserContext from '../Context/UserContext'
 import SendMessage from './SendMessage'
 import {jwtDecode} from 'jwt-decode'
@@ -7,12 +7,17 @@ function ChatBox({socket}) {
   const { user, messages, setMessages } = useContext(UserContext);
   const [msg, setMsg] = useState('');
   const decodedUser = jwtDecode(user.accessToken);
+  const lastMessage = useRef(null);
 
   useEffect(() => {
     socket.off('receive_message').on('receive_message', (data) => {
       setMessages((content) => [...content, data.message]);
     });
   },[socket]);
+
+  useEffect(() => {
+    lastMessage.current?.scrollIntoView();
+  }, [messages]);
 
   return (
     <div className="chat-box">
@@ -39,6 +44,7 @@ function ChatBox({socket}) {
               </div>           
             )
           })}
+          <div ref={lastMessage}/>
         </div>
         <SendMessage socket={socket}/>
     </div>

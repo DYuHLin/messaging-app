@@ -15,6 +15,7 @@ function ChatBar({socket}) {
             axios({method: "GET", url: `http://localhost:5000/api/chat/${decoded.user._id}`}, {headers: {"Content-Type": "application/json"}})
             .then(res => setChats(res.data)
             ).catch(err => console.log(err));  
+            socket.emit('join_chat', chatId.current); 
       },[]);
 
       useEffect(() => {
@@ -33,10 +34,7 @@ function ChatBar({socket}) {
         axios({method: "GET", url: `http://localhost:5000/api/message/${id}`}, {headers: {"Content-Type": "application/json"}})
             .then(res => setMessages(res.data)
             ).catch(err => console.log(err));  
-
-
-        socket.emit('join_chat', chatId.current);
-   
+        socket.emit('join_chat', chatId.current); 
       };
   return (
     <div className="chat-side">
@@ -46,8 +44,7 @@ function ChatBar({socket}) {
         <div className="users-chats">
             <div className="bar-options">
                 <p className="bar-chats" onClick={() => {setHidden(hidden == 'Chats' ? 'Groups' : 'Chats')}}>{hidden}</p>
-            </div>
-            
+            </div>        
             {
               chats === false ? <p>You do not have chats...</p> : chats.filter((item) => {
                 return search.toLocaleLowerCase() === '' ? item : item.creator.name.toLocaleLowerCase().includes(search) || item.user.name.toLocaleLowerCase().includes(search);

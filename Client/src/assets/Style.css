@@ -160,6 +160,7 @@ h3{
   align-items: center;
   justify-content: space-between;
   height: 100px;
+  cursor: pointer;
 }
 
 .user-options{
@@ -236,6 +237,7 @@ li{
 
 .message-input{
   width: 90%;
+  background-color: #24348a;
 }
 
 .img-label{
@@ -254,7 +256,12 @@ li{
 }
 
 .send-message-btn{
-  background-color: #0f1952;
+  background-color:#7a319c;
+  border: none;
+  border-radius: 7px;
+  padding-left: 6px;
+  padding-right: 6px;
+  cursor: pointer;
 }
 
 .hidden {
