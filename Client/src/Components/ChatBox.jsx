@@ -49,7 +49,7 @@ function ChatBox({socket}) {
                       msg.video.trim() != '' ? <a className="msg-img" href={msg.video}>{msg.video}</a>: ''
                     }
                   </div>
-                    {/* <span className="msg-time">{new Date(msg.date).toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</span> */}
+                  <span className="msg-time">{new Date(msg.date).toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</span> 
                 </div>  
               </div>           
             )

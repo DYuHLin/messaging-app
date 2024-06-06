@@ -59,18 +59,25 @@ function SendMessage({socket}) {
 
   return (
     <div className="send-message">
-        <faIcons.FaSmile className='img-icon' onClick={() => {setEmojiToggle(!emojiToggle)}}/>
+      <div className="emoji-container-btn">
+        <faIcons.FaSmile className='emoji-icon' onClick={() => {setEmojiToggle(!emojiToggle)}}/>
+      </div>
         <Emoji hidden = {emojiToggle} content={content} setContent={setContent} setEmoji={setEmojiToggle}/>
-        <textarea required className={`message-input ${hide}`} autoComplete='off' value={content} onChange={(e) => setContent(e.target.value)} placeholder='Send a message'/>
+        <textarea required cols='10' className={`message-input ${hide}`} autoComplete='off' value={content} onChange={(e) => setContent(e.target.value)} placeholder='Send a message'/>
         <input type="text" className={`${hidden}`} placeholder='Send a link' id='link' value={link} onChange={(e) => setLink(e.target.value)} autoComplete='off'/>
-        <div className="img-upload">
-        <label htmlFor="img" className='img-label'><faIcons.FaImage className='img-icon' /></label>
-        <input type="file" name="img" id="img" onChange={convertImage}/>
+        <div className="dropdown">
+          <div className="content">
+            <div className="img-upload">
+              <label htmlFor="img" className='img-label'><faIcons.FaImage className='msg-icon'/>Image</label>
+              <input type="file" name="img" id="img" onChange={convertImage}/>
+            </div>
+            <div className="img-upload">
+              <label htmlFor="link" className='img-label' onClick={showLink}>{
+              hidden == 'hidden' ? <><faIcons.FaLink className='msg-icon'/>Link</> : <><faIcons.FaPenFancy className='msg-icon'/>Message</>}</label>
+            </div> 
+          </div>
+          <faIcons.FaEllipsisV className='menu-icon'/>
         </div>
-        <div className="img-upload">
-        <label htmlFor="link" className='img-label' onClick={showLink}>{
-        hidden == 'hidden' ? <faIcons.FaLink className='img-icon' /> : <faIcons.FaPenFancy className='img-icon' />}</label>
-        </div>      
         <button className='send-message-btn' onClick={sendMessage}><IoIcons.IoMdSend className='img-icon' /></button>
     </div>
   )
