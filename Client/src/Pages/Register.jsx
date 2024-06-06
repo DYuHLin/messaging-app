@@ -4,6 +4,7 @@ import ImageUpload from '../Components/ImageUpload'
 import UserContext from '../Context/UserContext'
 import axios from 'axios'
 import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Register() {
   const { imageInfo } = useContext(UserContext);
@@ -28,7 +29,7 @@ function Register() {
            .then(res => res.data)
            .then(status => {
             if(status === "failed"){
-              setError("This username already exists.");
+              setError("This email already exists.");
               toast.error("There was an error");
             } else if(status === "match"){
               setError("your passwords do not match.");

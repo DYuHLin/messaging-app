@@ -191,6 +191,21 @@ h3{
   display: flex;
 }
 
+.emoji-container{
+  position: absolute;
+  top: 65;
+  bottom: 0;
+  left: 0;
+  right: 10;
+}
+
+textarea{
+  padding: 2px;
+  font-size: 16px;
+  resize: none;
+  overflow-y: scroll;
+}
+
 .user-options{
   background-color: #0f1952;
   padding: 15px;

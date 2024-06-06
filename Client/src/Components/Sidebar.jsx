@@ -6,9 +6,10 @@ import * as AiIcons from 'react-icons/ai'
 import { SidebarData } from './SidebarData'
 import * as RiIcons from 'react-icons/ri'
 import { IconContext } from 'react-icons/lib'
-import {toast} from 'react-toastify'
 import UserContext from '../Context/UserContext'
 import axios from 'axios'
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Sidebar() {
     const [sidebar, setSidebar] = useState(false);
@@ -29,7 +30,7 @@ function Sidebar() {
                 }
         });
         setUser(false);
-        navigate('/ogin');
+        navigate('/login');
         toast.success("You have logged out successfully");
       };
 

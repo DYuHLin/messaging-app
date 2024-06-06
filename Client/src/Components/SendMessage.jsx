@@ -4,6 +4,7 @@ import * as IoIcons from 'react-icons/io'
 import axios from 'axios'
 import UserContext from '../Context/UserContext'
 import { jwtDecode } from 'jwt-decode'
+import Emoji from './Emoji'
 
 function SendMessage({socket}) {
     const [link, setLink] = useState('');
@@ -11,6 +12,7 @@ function SendMessage({socket}) {
     const [image, setImage] = useState('');
     const [hidden, setHidden] = useState('hidden');
     const [hide, setHide] = useState('');
+    const [emojiToggle, setEmojiToggle] = useState(true);
     const currentMsg = useRef();
 
     const { user, setMessages, chat, chatId } = useContext(UserContext);
@@ -57,7 +59,9 @@ function SendMessage({socket}) {
 
   return (
     <div className="send-message">
-        <input type="text" required name='name' id='name' className={`message-input ${hide}`} autoComplete='off' value={content} onChange={(e) => setContent(e.target.value)} placeholder='Send a message'/>
+        <faIcons.FaSmile className='img-icon' onClick={() => {setEmojiToggle(!emojiToggle)}}/>
+        <Emoji hidden = {emojiToggle} content={content} setContent={setContent} setEmoji={setEmojiToggle}/>
+        <textarea required className={`message-input ${hide}`} autoComplete='off' value={content} onChange={(e) => setContent(e.target.value)} placeholder='Send a message'/>
         <input type="text" className={`${hidden}`} placeholder='Send a link' id='link' value={link} onChange={(e) => setLink(e.target.value)} autoComplete='off'/>
         <div className="img-upload">
         <label htmlFor="img" className='img-label'><faIcons.FaImage className='img-icon' /></label>
