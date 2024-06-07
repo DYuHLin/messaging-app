@@ -5,7 +5,11 @@ import { io } from 'socket.io-client'
 const UserContext = createContext();
 
 export const UserProvider = ({children}) => {
-    const [user, setUser] = useState(false);
+    const getInitialState = () => {
+        const localUser = sessionStorage.getItem("CHAT_USER");
+        return localUser ? JSON.parse(localUser) : false;
+    };
+    const [user, setUser] = useState(getInitialState);
     const [messages, setMessages] = useState([]);
     const [chat, setChat] = useState(false);
     const [groups, setGroups] = useState(false);
@@ -22,6 +26,10 @@ export const UserProvider = ({children}) => {
             user === false ? (<Navigate to='/login' />) : user.accessToken ? (<Outlet />) : ''
         )
     };
+
+    useEffect(() => {
+        sessionStorage.setItem('CHAT_USER', JSON.stringify(user));
+    }, [user]);
 
     return(
         <UserContext.Provider value={{user, setUser, ProtectedRoutes, setImageInfo, imageInfo, messages, setMessages, 

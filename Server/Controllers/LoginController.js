@@ -40,7 +40,7 @@ exports.post_login = asyncHandler(async (req, res, next) => {
 
         refreshTokens.push(refreshToken);
 
-        res.json({
+        return res.json({
             accessToken: accessToken,
             refreshToken: refreshToken
         });
@@ -96,7 +96,7 @@ exports.verifyToken = (req, res, next) =>{
         const bearer = bearerHeader.split(" ");
         //get token from array
         const bearerToken = bearer[1];
-        //set tokem
+        //set token
         req.token = bearerToken;
         //next middleware
         next();

@@ -70,9 +70,11 @@ function Chats() {
                                     </div>
                                     <span>{chat.creator.name + " " + chat.creator.surname}</span>
                                 </div>    
-                                <ul className='options-user'>
-                                  <li onClick={() => showDelete(chat._id)}><IoIcons.IoMdRemoveCircle /></li> 
-                                </ul>                           
+                                <div className="user-options">
+                                  <ul className='options-user'>
+                                    <li onClick={() => showDelete(chat._id)}><IoIcons.IoMdRemoveCircle /></li> 
+                                  </ul> 
+                                </div>                                                        
                             </div>
                     ) : chat.creator._id == decoded.user._id ? (
                             <div className={`user`} key={id}>
@@ -82,9 +84,11 @@ function Chats() {
                                     </div>
                                     <span>{chat.user.name + " " + chat.user.surname}</span>
                                 </div>  
-                                <ul className='options-user'>
-                                  <li onClick={() => showDelete(chat._id)}><IoIcons.IoMdRemoveCircle /></li> 
-                                </ul>                            
+                                <div className="user-options">
+                                  <ul className='options-user'>
+                                    <li onClick={() => showDelete(chat._id)}><IoIcons.IoMdRemoveCircle /></li> 
+                                  </ul>
+                                </div>                                                       
                             </div>
                     ): ''
                 )

@@ -33,27 +33,21 @@ function ChatBar({socket, groups, chats}) {
               chats === false ? <p>You do not have chats...</p> : chats.filter((item) => {
                 return search.toLocaleLowerCase() === '' ? item : item.creator.name.toLocaleLowerCase().includes(search) || item.user.name.toLocaleLowerCase().includes(search);
                 }).map((chat, id) => {
-                return(    
-                    chat.user._id == decoded.user._id ? (
-                            <div className={`user ${hidden == 'Groups' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(chat._id, chat.creator.name, chat.creator.surname)}>
+                 return(
+                    chat.members.map((member) => {
+                        return (
+                        member.user._id !== decoded.user._id ? (
+                            <div className={`user ${hidden == 'Groups' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(chat._id, member.user.name, member.user.surname)}>
                                 <div className="user-info">
                                     <div className="img-container">
-                                        <img className='user-img' src={chat.creator.profileImg.image} alt="user icon" /> 
+                                        <img className='user-img' src={member.user.profileImg.image} alt="user icon" /> 
                                     </div>
-                                    <span>{chat.creator.name + " " + chat.creator.surname}</span>
+                                    <span>{member.user.name + " " + member.user.surname}</span>
                                 </div>                              
-                            </div>
-                    ) : chat.creator._id == decoded.user._id ? (
-                            <div className={`user ${hidden == 'Groups' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(chat._id, chat.user.name, chat.user.surname)}>
-                                <div className="user-info">
-                                    <div className="img-container">
-                                        <img className='user-img' src={chat.user.profileImg.image} alt="user icon" /> 
-                                    </div>
-                                    <span>{chat.user.name + " " + chat.user.surname}</span>
-                                </div>                              
-                            </div>
-                    ): ''
-                )
+                            </div>) : ''
+                        )
+                    })   
+                 )
               }) 
             }
             {

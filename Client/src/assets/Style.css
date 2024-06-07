@@ -141,7 +141,7 @@ input{
 .msg-bubble.other-bubble{
   background-color: #24348a;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 10px 10px 10px 0;
   display: flex;
   flex-direction: column;
 }
@@ -149,7 +149,7 @@ input{
 .msg-bubble.you-bubble{
   background-color: #7a319c;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 10px 10px 0 10px;
   display: flex;
   flex-direction: column;
 }
@@ -231,7 +231,6 @@ textarea::-webkit-scrollbar-thumb{
 }
 
 .user-options{
-  background-color: #0f1952;
   padding: 15px;
   width: 10%;
   border-radius: 7px;
@@ -239,7 +238,7 @@ textarea::-webkit-scrollbar-thumb{
 
 .options-user{
   display: flex;
-  justify-content: space-between;
+  gap: 20px;
   list-style: none;
   left: -20px;
 }
@@ -300,6 +299,11 @@ li{
   height: 10vh;
   display: flex;
   gap: 14px;
+}
+
+.send-icon{
+  width: 50px;
+  height: 100%;
 }
 
 .emoji-container-btn{
@@ -385,12 +389,10 @@ li{
 }
 
 .send-message-btn{
-  background-color:#7a319c;
+  background-color:transparent;
   border: none;
-  width: 10%;
+  max-width: 10%;
   border-radius: 7px;
-  padding-left: 6px;
-  padding-right: 6px;
   cursor: pointer;
 }
 
@@ -419,5 +421,11 @@ body::-webkit-scrollbar-thumb {
 
   .chat-box{
     width: 100%;
+  }
+}
+
+@media(max-width: 580px){
+  .msg-bubble{
+    max-width: 200px;
   }
 }

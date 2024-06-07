@@ -5,9 +5,12 @@ const mongoose = require('mongoose');
 const messages = require('../Models/Message');
 
 exports.get_chats = asyncHandler(async(req, res, next) => {
-    const chat = await chats.find( {$or: [ {user: req.params.id}, 
-        {creator: req.params.id} ]} ).populate('user').populate('creator').populate([{path: 'user', 
-        populate: [{path: 'profileImg'}]}]).populate([{path: 'creator', populate: [{path: 'profileImg'}]}]).exec();
+    const chat = await chats.find( {'members.user': req.params.id} ).populate('members.user').populate([
+            {
+                path: 'members.user',
+                populate: [{path: 'profileImg'}]
+            }
+        ]).exec();
 
     return res.json(chat);
 });
@@ -16,10 +19,9 @@ exports.post_chat = asyncHandler(async (req, res, next) => {
     try{
         const errors = validationResult(req);
 
-        const chat = new chats({
-            creator: req.body.user1,
-            user: req.body.user2
-        });
+        const chat = new chats({});
+        chat.members.push({user: req.body.user1});
+        chat.members.push({user: req.body.user2});
         if(!errors.isEmpty()){
             return console.log(errors);
         } else {       
@@ -34,6 +36,6 @@ exports.post_chat = asyncHandler(async (req, res, next) => {
 
 exports.delete_chat = asyncHandler(async (req, res, next) => {
     await chats.findByIdAndDelete(req.params.id);
-    await messages.findOneAndDelete({reply: req.params.id});
+    await messages.deleteMany({reply: req.params.id});
     return res.json('OK');
 });

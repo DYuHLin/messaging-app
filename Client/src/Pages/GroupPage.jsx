@@ -86,10 +86,12 @@ const removeUser = (id) => {
                         <img className='user-img' src={res.profileImg.image} alt="user icon" />
                       </div>
                       <span>{res.name + " " + res.surname}</span>
-                    </div>                                              
+                    </div>   
+                    <div className="user-options">
                       <ul className='options-user'>
                         <li onClick={() => addMembers(res._id)}><faIcons.FaPlus /></li> 
                       </ul>
+                    </div>                                                   
                   </div>
                 )
             })
@@ -109,9 +111,11 @@ const removeUser = (id) => {
                   </div>   
                   {
                       decodedUser.user._id !== group.creator._id ? "" :
-                      <ul className='options-user'>
-                        <li onClick={() => removeUser(member.user._id)}><IoIcons.IoMdRemoveCircle /></li>
-                      </ul>
+                      <div className="user-options">
+                        <ul className='options-user'>
+                          <li onClick={() => removeUser(member.user._id)}><IoIcons.IoMdRemoveCircle /></li>
+                         </ul>
+                      </div>                     
                   }                                                       
                 </div>
               )

@@ -78,7 +78,7 @@ function SendMessage({socket}) {
           </div>
           <faIcons.FaEllipsisV className='menu-icon'/>
         </div>
-        <button className='send-message-btn' onClick={sendMessage}><IoIcons.IoMdSend className='img-icon' /></button>
+        <button className='send-message-btn' onClick={sendMessage}><IoIcons.IoMdSend className='send-icon' /></button>
     </div>
   )
 }
