@@ -13,6 +13,7 @@ function UsersList() {
     const [users, setUsers] = useState(false);
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
+    const decoded = jwtDecode(user.accessToken);
 
     useEffect(() => {
         axios({method: 'GET', url: `http://localhost:5000/api/register/getusers`}, {headers: { "Content-Type": "application/json" }})
@@ -28,8 +29,15 @@ function UsersList() {
 
     const addFriend = (userId) => {
         const decoded = jwtDecode(user.accessToken);
-        axios.put(`http://localhost:5000/api/register/${decoded.user._id}/addfriend`, {friendId: userId}, {headers: {"Content-Type": "application/json"}});
-        toast.success('Friend added');
+        axios.put(`http://localhost:5000/api/register/${decoded.user._id}/addfriend`, {friendId: userId}, {headers: {"Content-Type": "application/json"}})
+        .then((res) => {
+            if(res.data =='ok'){
+                toast.success('Friend added');
+            } else if(res.data == 'added'){
+                toast.error('Friend already added');
+            };
+        })
+ 
     };
 
   return (
@@ -45,8 +53,7 @@ function UsersList() {
                     users.filter((item) => {
                         return search.toLocaleLowerCase() === '' ? item : item.name.toLocaleLowerCase().includes(search);
                     }).map((res, key) => {
-                        return (
-                            <div className="user" key={key}>
+                        return (res._id !== decoded.user._id ?(<div className="user" key={key}>
                                 <div className="user-info">
                                     <div className="img-container">
                                         <img className='user-img' src={res.profileImg.image} alt="user icon" />
@@ -60,7 +67,7 @@ function UsersList() {
                                         <li onClick={() => createChat(res._id)}><IoIcons.IoMdChatbubbles /></li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div>) : ''
                         )
                     })
                 }

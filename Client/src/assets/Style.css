@@ -188,6 +188,11 @@ h3{
   border-radius: 6px;
   background-color: #24348a;
   border: 1px solid #3548b3;
+  cursor: pointer;
+}
+
+.bar-chats:hover{
+  background-color: #0f1952;
 }
 
 .user{
@@ -234,6 +239,15 @@ textarea::-webkit-scrollbar-thumb{
   padding: 15px;
   width: 10%;
   border-radius: 7px;
+}
+
+.user-message{
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-message{
+  font-size: 14px;
 }
 
 .options-user{
@@ -310,6 +324,29 @@ li{
   height: 100%;
   display: flex;
   align-items: center;
+}
+
+.btn-group{
+  display: flex;
+  gap: 20px;
+}
+
+.delete{
+  padding: 12px;
+  background: red;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.cancel{
+  padding: 12px;
+  background: blue;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
 }
 
 .message-input{

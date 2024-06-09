@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const messages = require('../Models/Message');
+const chat = require('../Models/Chat');
 const {body, validationResult} = require('express-validator');
 
 exports.post_message = asyncHandler(async (req, res, next) => {
@@ -19,6 +20,8 @@ exports.post_message = asyncHandler(async (req, res, next) => {
             return console.log(errors);
         } else {
             await message.save();
+            await chat.updateOne({_id: req.body.chat}, {$set: {
+                message: message._id}});
             const newMsg = await message.populate('user')
             return res.json(newMsg);
         };

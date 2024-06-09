@@ -10,10 +10,9 @@ import 'react-toastify/dist/ReactToastify.css'
 function Chats() {
     const [chats, setChats] = useState(false);
     const [search, setSearch] = useState('');
-    const [searchGroups, setSearchGroups] = useState('');
     const [hidden, setHidden] = useState('hidden');
     const [chat, setChat] = useState(false);
-    const { user, setMessages, messages, chatId } = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
     const navigate = useNavigate();
   
@@ -59,38 +58,27 @@ function Chats() {
                 {
                 chats === false ? (<p>There are no users</p>):
                 chats.filter((item) => {
-                  return search.toLocaleLowerCase() === '' ? item : item.creator.name.toLocaleLowerCase().includes(search) || item.user.name.toLocaleLowerCase().includes(search);
+                  return search.toLocaleLowerCase() === '' ? item : item.members[0].user.name.toLocaleLowerCase().includes(search) || item.members[1].user.name.toLocaleLowerCase().includes(search);
                 }).map((chat, id) => {
                   return(
-                    chat.user._id == decoded.user._id ? (
-                            <div className={`user`} key={id}>
-                                <div className="user-info">
-                                    <div className="img-container">
-                                        <img className='user-img' src={chat.creator.profileImg.image} alt="user icon" /> 
-                                    </div>
-                                    <span>{chat.creator.name + " " + chat.creator.surname}</span>
-                                </div>    
-                                <div className="user-options">
-                                  <ul className='options-user'>
-                                    <li onClick={() => showDelete(chat._id)}><IoIcons.IoMdRemoveCircle /></li> 
-                                  </ul> 
-                                </div>                                                        
-                            </div>
-                    ) : chat.creator._id == decoded.user._id ? (
-                            <div className={`user`} key={id}>
-                                <div className="user-info">
-                                    <div className="img-container">
-                                        <img className='user-img' src={chat.user.profileImg.image} alt="user icon" /> 
-                                    </div>
-                                    <span>{chat.user.name + " " + chat.user.surname}</span>
-                                </div>  
-                                <div className="user-options">
-                                  <ul className='options-user'>
-                                    <li onClick={() => showDelete(chat._id)}><IoIcons.IoMdRemoveCircle /></li> 
-                                  </ul>
-                                </div>                                                       
-                            </div>
-                    ): ''
+                    chat.members.map((member) => {
+                      return (
+                      member.user._id !== decoded.user._id ? (
+                          <div className={`user`} key={id}>
+                              <div className="user-info">
+                                  <div className="img-container">
+                                      <img className='user-img' src={member.user.profileImg.image} alt="user icon" /> 
+                                  </div>
+                                  <span>{member.user.name + " " + member.user.surname}</span>
+                              </div>
+                              <div className="user-options">
+                                <ul className='options-user'>
+                                  <li onClick={() => showDelete(chat._id)}><IoIcons.IoMdRemoveCircle /></li> 
+                                </ul> 
+                              </div>                               
+                          </div>) : ''
+                      )
+                  }) 
                 )
               })
               }

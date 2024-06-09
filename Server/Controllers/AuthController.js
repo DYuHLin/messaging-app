@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const users = require('../Models/User');
+const messages = require('../Models/Message');
 const images = require('../Models/ProfileImage');
 
 exports.post_register = asyncHandler(async (req, res, next) => {
@@ -84,7 +85,7 @@ exports.update_image = asyncHandler(async (req, res, next) => {
 exports.add_friend = asyncHandler(async (req, res, next) => {
     const findFriend = await users.findOne({_id: req.params.id, 'friends.user': req.body.friendId});
     if(findFriend){
-        return res.json(findFriend);
+        return res.json('added');
     } else{
         await users.updateOne({_id: req.params.id}, {$push: {friends: {user: req.body.friendId}}});
         return res.json('ok');
@@ -109,4 +110,21 @@ exports.get_users = asyncHandler(async (req, res, next) => {
     ]).exec();
 
     return res.json(usersList);
+});
+
+exports.get_user = asyncHandler(async (req, res, next) => {
+    const user = await users.findById(req.params.id).populate('profileImg').populate('friends.user').populate([
+        {
+            path: 'friends.user',
+            populate: [{path: 'profileImg'}]
+        }
+    ]).exec();
+
+    return res.json(user);
+});
+
+exports.post_delete = asyncHandler(async (req, res, next) => {
+    await users.findByIdAndDelete(req.params.id);
+    await messages.deleteMany({user: req.params.id});
+    await users.updateMany({'friends.user': req.body.userId}, {$pull: {friends: userId}});
 });

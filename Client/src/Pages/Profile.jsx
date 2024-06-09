@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {jwtDecode} from 'jwt-decode'
 import UserContext from '../Context/UserContext'
 import { Link } from 'react-router-dom'
@@ -12,6 +12,8 @@ function Profile() {
   const [hidden, setHidden] = useState('hidden');
   const [image, setImage] = useState(false);
   const [img, setImg] = useState(false);
+  const [chats, setChats] = useState(false);
+  const [groups, setGroups] = useState(false);
   const decoded = jwtDecode(user.accessToken);
 
   const navigate = useNavigate();
@@ -42,6 +44,25 @@ function Profile() {
     data.readAsDataURL(e.target.files[0]);
   };
 
+  const deleteAccount = () => {
+    if(groups !== false || groups.length !== 0){
+      toast.error('You must delete or leave all your groups first.');
+    } else if(chats !== false || chats.length !== 0){
+      toast.error('You must delete all your chats first');
+    } else if(groups == false || groups.length == 0 && chats == false || chats.length == 0){
+      toast.success("You have successfully deleted your account.");
+    };
+  };
+
+  useEffect(() => {
+    axios({method: "GET", url: `http://localhost:5000/api/chat/${decoded.user._id}`}, {headers: {"Content-Type": "application/json"}})
+    .then(res => setChats(res.data)
+    ).catch(err => console.log(err));  
+
+    axios({method: 'GET', url: `http://localhost:5000/api/group/${decoded.user._id}/getgroups`}, {headers: { "Content-Type": "application/json" }})
+    .then((res) => setGroups(res.data));
+  },[]);
+
   return (
     <section>
       <h1 className='register-title'>Profile</h1>
@@ -52,7 +73,7 @@ function Profile() {
 
       <div className={`delete-account ${hidden}`}>
         <p>Are you sure?</p>
-        <button>Delete</button>
+        <button className='delete' onClick={deleteAccount}>Delete</button>
       </div>
 
       <div className="user-information">
@@ -73,7 +94,7 @@ function Profile() {
           <p>Email: {decoded.user.email}</p>
         </div>
       </div>
-      <button onClick={() => console.log(imageInfo)}>show</button>
+      <button onClick={() => console.log(chats)}>show</button>
     </section>
   )
 }

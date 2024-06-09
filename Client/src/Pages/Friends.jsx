@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import * as IoIcons from 'react-icons/io'
 import UserContext from '../Context/UserContext'
@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css'
 function Friends() {
   const { user } = useContext(UserContext);
     const [search, setSearch] = useState('');
+    const [friends, setFriends] = useState(false);
     const navigate = useNavigate();
     const decodedUser = jwtDecode(user.accessToken);
 
@@ -26,6 +27,11 @@ function Friends() {
         toast.success('Friend removed');
     };
 
+    useEffect(() => {
+        axios({method: 'GET', url: `http://localhost:5000/api/register/${decodedUser.user._id}/getuser`}, {headers: { "Content-Type": "application/json" }})
+            .then((res) => setFriends(res.data.friends));
+    }, [friends]);
+
   return (
     <section>
         <h1 className="register-title">Friends</h1>
@@ -35,9 +41,9 @@ function Friends() {
             </div>
             <div className="users">
                 {
-                  decodedUser.user.friends === false ? (<p>There are no friends</p>):
-                  decodedUser.user.friends < 0 ? (<p>There are no friends</p>):
-                  decodedUser.user.friends.filter((item) => {
+                  friends === false ? (<p>There are no friends</p>):
+                  friends < 0 ? (<p>There are no friends</p>):
+                  friends.filter((item) => {
                     return search.toLocaleLowerCase() === '' ? item : item.user.name.toLocaleLowerCase().includes(search);
                     }).map((res, key) => {
                         return (

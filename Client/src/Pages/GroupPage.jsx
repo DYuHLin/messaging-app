@@ -10,6 +10,7 @@ import { jwtDecode } from 'jwt-decode'
 
 function GroupPage() {
   const [group, setGroup] = useState(false);
+  const [members, setMembers] = useState(false);
   const [users, setUsers] = useState(false);
   const [status, setStatus] = useState('');
   const [hidden, setHidden] = useState('hidden');
@@ -25,6 +26,7 @@ function GroupPage() {
        .then(() => {
           if(status == 'ok'){
             toast.success("User added successfully");
+            
             navigate('/groups');
         } else if(status == 'error'){
             toast.error("User already in this group");
@@ -52,20 +54,20 @@ const removeUser = (id) => {
   axios.put(`http://localhost:5000/api/group/${group._id}/delete`, {userId: id}, {headers: { "Content-Type": "application/json" }})
         .catch(err => console.log(err));
         toast.success("Member removed successfully");
-        navigate(`/groups/${id}`);
+        navigate(`/groups`);
 };
 
   useEffect(() => {
     axios({method: 'GET', url: `http://localhost:5000/api/group/${id.id}`}, {headers: { "Content-Type": "application/json" }})
-        .then((res) => setGroup(res.data));
+        .then((res) => {setGroup(res.data); setMembers(res.data.members)});
 
     axios({method: 'GET', url: `http://localhost:5000/api/register/getusers`}, {headers: { "Content-Type": "application/json" }})
       .then((res) => setUsers(res.data))
-},[]);
+},[group]);
 
   return (
     <section>
-      {group === false ? '' : <h2>{group.name}</h2>} 
+      {group === false ? '' : <h2>{group.name ? group.name : ''}</h2>} 
       {
       group === false ? '' : decodedUser.user._id === group.creator._id ? <div className="admin-role">
         <p onClick={() => deleteGroup()}>Delete group</p>
@@ -79,7 +81,7 @@ const removeUser = (id) => {
             {
             users === false ? '':
               users.map((res, key) => {
-                return (
+                return (res._id !== decodedUser.user._id ?(
                   <div className={`user ${hidden}`} key={key}>
                     <div className="user-info">
                       <div className="img-container">
@@ -92,15 +94,15 @@ const removeUser = (id) => {
                         <li onClick={() => addMembers(res._id)}><faIcons.FaPlus /></li> 
                       </ul>
                     </div>                                                   
-                  </div>
+                  </div>):''
                 )
             })
             }
             <h3>Members</h3>
           {
-            group === false ? '' :
-            group.members < 0 ? <p>There are no group members</p> :
-            group.members.map((member, index) => {
+            members === false ? '' :
+            members < 0 ? <p>There are no group members</p> :
+            members.map((member, index) => {
               return (
                 <div className="user" key={index}>
                   <div className="user-info">

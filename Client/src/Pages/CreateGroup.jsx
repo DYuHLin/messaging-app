@@ -16,7 +16,6 @@ function CreateGroup() {
     const [users, setUsers] = useState(false);
     const { user } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
-    const [members, setMembers] = useState([`${decoded.user.name} ${decoded.user.surname}`]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -36,14 +35,13 @@ function CreateGroup() {
 
     };
 
-    const addMembers = (id, name, surname) => {
+    const addMembers = (id) => {
         const userAdd = {userId: id}
         axios.put(`http://localhost:5000/api/group/${group._id}/add`, userAdd, {headers: { "Content-Type": "application/json" }})
            .then(res => setStatus(res.data))
            .then(() => {
             if(status == 'ok'){
                 toast.success("User added successfully");
-                setMembers((current) => [...current, `${name} ${surname}`]);
             } else if(status == 'error'){
                 toast.error("User already in this group");
             };
@@ -69,10 +67,6 @@ function CreateGroup() {
                 <button className='form-btn'>Create Group</button>
         </form>
         <div className="user-container">
-            <div className={`added-members ${hidden == '' ? 'hidden' : ''}`}>
-                <p>{`${'Members:' + ' '}`}</p>
-                {members.map((res, id) => {return (<p key={id}>{res}, </p>)})}
-            </div>
             <div className="users">
             {
             users === false ? '':
@@ -86,7 +80,7 @@ function CreateGroup() {
                                     <span>{res.name + " " + res.surname}</span>
                                 </div>                                              
                                 <ul className='options-user'>
-                                        <li onClick={() => addMembers(res._id, res.name, res.surname)}><faIcons.FaPlus /></li>
+                                        <li onClick={() => addMembers(res._id)}><faIcons.FaPlus /></li>
                                 </ul>
                             </div>
                             )
