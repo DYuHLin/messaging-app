@@ -71,7 +71,7 @@ function Profile() {
     <section>
       <h1 className='register-title'>Profile</h1>
       <div className="admin-role">
-        <p onClick={() => setHidden(hidden == 'hidden' ? '' : 'hidden')}>Delete Account</p>
+        <p className='delete-account' onClick={() => setHidden(hidden == 'hidden' ? '' : 'hidden')}>Delete Account</p>
         <Link to='/yourprofile/edit'>Edit Account</Link>
       </div>
 
@@ -98,7 +98,6 @@ function Profile() {
           <p>Email: {decoded.user.email}</p>
         </div>
       </div>
-      <button onClick={() => console.log(chats)}>show</button>
     </section>
   )
 }

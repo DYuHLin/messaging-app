@@ -31,7 +31,7 @@ function ChatBar({socket, groups, chats}) {
                 <button className="bar-chats" onClick={() => {setHidden(hidden == 'Chats' ? 'Groups' : 'Chats')}}>{hidden}</button>
             </div>        
             {
-              chats === false ? <p>You do not have chats...</p> : chats.filter((item) => {
+              chats === false ? <p>You do not have chats...</p> : chats.length == 0 ? <p>You do not have chats</p> : chats.filter((item) => {
                 return search.toLocaleLowerCase() === '' ? item : item.members[0].user.name.toLocaleLowerCase().includes(search) || item.members[1].user.name.toLocaleLowerCase().includes(search);
                 }).map((chat, id) => {
                  return(

@@ -56,7 +56,7 @@ function Chats() {
             </div>
             <div className="users">
                 {
-                chats === false ? (<p>There are no users</p>):
+                chats === false ? (<p>There are no chats</p>):
                 chats.filter((item) => {
                   return search.toLocaleLowerCase() === '' ? item : item.members[0].user.name.toLocaleLowerCase().includes(search) || item.members[1].user.name.toLocaleLowerCase().includes(search);
                 }).map((chat, id) => {

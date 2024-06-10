@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import * as faIcons from 'react-icons/fa'
 import * as IoIcons from 'react-icons/io'
 import axios from 'axios'
@@ -9,11 +9,12 @@ import Emoji from './Emoji'
 function SendMessage({socket}) {
     const [link, setLink] = useState('');
     const [content, setContent] = useState('');
+    const [options, setOptions] = useState(false);
     const [image, setImage] = useState('');
     const [hidden, setHidden] = useState('hidden');
     const [hide, setHide] = useState('');
     const [emojiToggle, setEmojiToggle] = useState(true);
-    const currentMsg = useRef();
+    const menuRef = useRef();
 
     const { user, setMessages, chat, chatId } = useContext(UserContext);
 
@@ -53,9 +54,16 @@ function SendMessage({socket}) {
       data.readAsDataURL(e.target.files[0]);
       };
 
-      const show = () => {
-        console.log(image)
-      }
+      useEffect(() => {
+        let handler = (e) => {
+          if(!menuRef.current.contains(e.target)){
+            setOptions(false);
+          };      
+        };
+
+        document.addEventListener('mousedown', handler);
+        return() => {document.removeEventListener('mousedown', handler);};
+      });
 
   return (
     <div className="send-message">
@@ -65,8 +73,8 @@ function SendMessage({socket}) {
         <Emoji hidden = {emojiToggle} content={content} setContent={setContent} setEmoji={setEmojiToggle}/>
         <textarea required cols='10' className={`message-input ${hide}`} autoComplete='off' value={content} onChange={(e) => setContent(e.target.value)} placeholder='Send a message'/>
         <input type="text" className={`${hidden}`} placeholder='Send a link' id='link' value={link} onChange={(e) => setLink(e.target.value)} autoComplete='off'/>
-        <div className="dropdown">
-          <div className="content">
+        <div className="dropdown" ref={menuRef}>
+          <div className={`content ${options == false ? 'hidden' : ''}`}>
             <div className="img-upload">
               <label htmlFor="img" className='img-label'><faIcons.FaImage className='msg-icon'/>Image</label>
               <input type="file" name="img" id="img" onChange={convertImage}/>
@@ -76,7 +84,7 @@ function SendMessage({socket}) {
               hidden == 'hidden' ? <><faIcons.FaLink className='msg-icon'/>Link</> : <><faIcons.FaPenFancy className='msg-icon'/>Message</>}</label>
             </div> 
           </div>
-          <faIcons.FaEllipsisV className='menu-icon'/>
+          <faIcons.FaEllipsisV className='menu-icon' onClick={() => setOptions(!options)}/>
         </div>
         <button className='send-message-btn' onClick={sendMessage}><IoIcons.IoMdSend className='send-icon' /></button>
     </div>

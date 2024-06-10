@@ -22,7 +22,7 @@ function GroupPage() {
   const addMembers = (id) => {
     const userAdd = {userId: id}
     axios.put(`http://localhost:5000/api/group/${group._id}/add`, userAdd, {headers: { "Content-Type": "application/json" }})
-       .then(res => setStatus(res.data))
+       .then((res) => setStatus(res.data))
        .then(() => {
           if(status == 'ok'){
             toast.success("User added successfully");
@@ -40,7 +40,7 @@ const deleteGroup = () => {
   axios.delete(`http://localhost:5000/api/group/${group._id}/deletegroup`, {headers: { "Content-Type": "application/json" }})
         .catch(err => console.log(err));
         toast.success("Group deleted successfully");
-        navigate('/groups');
+        navigate('/');
 };
 
 const leaveGroup = (id) => {

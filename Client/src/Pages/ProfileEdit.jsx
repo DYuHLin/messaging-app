@@ -57,7 +57,6 @@ function ProfileEdit() {
             <input type="email" name='email' id='email' className='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email'/>
             <button type='submit' className='form-btn'>Submit</button>
         </form>
-        <button onClick={() => console.log(imageInfo)}>Show</button>
     </section>
   )
 }
