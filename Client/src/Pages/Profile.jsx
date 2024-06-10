@@ -8,7 +8,7 @@ import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 function Profile() {
-  const { user, imageInfo } = useContext(UserContext);
+  const { user, setUser, imageInfo } = useContext(UserContext);
   const [hidden, setHidden] = useState('hidden');
   const [image, setImage] = useState(false);
   const [img, setImg] = useState(false);
@@ -45,12 +45,16 @@ function Profile() {
   };
 
   const deleteAccount = () => {
-    if(groups !== false || groups.length !== 0){
+    if(groups.length !== 0){
       toast.error('You must delete or leave all your groups first.');
-    } else if(chats !== false || chats.length !== 0){
+    } else if(chats.length !== 0){
       toast.error('You must delete all your chats first');
-    } else if(groups == false || groups.length == 0 && chats == false || chats.length == 0){
+    } else if(groups.length == 0 && chats.length == 0){
+      axios.delete(`http://localhost:5000/api/register/${decoded.user._id}/delete`, {userId: decoded.user._id}, {headers: {"Content-Type": "application/json"}})
+      .then((res) => console.log(res.data))
       toast.success("You have successfully deleted your account.");
+      setUser(false);
+      navigate('/login');
     };
   };
 

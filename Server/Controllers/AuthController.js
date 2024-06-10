@@ -126,5 +126,6 @@ exports.get_user = asyncHandler(async (req, res, next) => {
 exports.post_delete = asyncHandler(async (req, res, next) => {
     await users.findByIdAndDelete(req.params.id);
     await messages.deleteMany({user: req.params.id});
-    await users.updateMany({'friends.user': req.body.userId}, {$pull: {friends: userId}});
+   const updated = await users.updateMany({'friends.user': req.params.id}, {$pull: {friends: {user: req.params.id}}});
+   return res.json(updated);
 });
