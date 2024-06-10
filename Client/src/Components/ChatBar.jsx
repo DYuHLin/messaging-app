@@ -6,13 +6,14 @@ import { jwtDecode } from 'jwt-decode'
 function ChatBar({socket, groups, chats}) {
     const [hidden, setHidden] = useState('Chats');
     const [search, setSearch] = useState('');
-    const { user, setChat, setMessages, messages, chatId, setName, valid, setValid } = useContext(UserContext);
+    const { user, setChat, setMessages, messages, chatId, setName, valid, setValid, setOnline } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
 
-      const selectChat = (id, name, surname) => {
+      const selectChat = (id, name, surname, live) => {
         setChat(id);
         setName(name + ' ' + surname);
         setValid('valid');
+        setOnline(live);
         chatId.current = id;
         axios({method: "GET", url: `http://localhost:5000/api/message/${id}`}, {headers: {"Content-Type": "application/json"}})
             .then(res => setMessages(res.data)
@@ -37,7 +38,7 @@ function ChatBar({socket, groups, chats}) {
                     chat.members.map((member) => {
                         return (
                         member.user._id !== decoded.user._id ? (
-                            <div className={`user ${hidden == 'Groups' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(chat._id, member.user.name, member.user.surname)}>
+                            <div className={`user ${hidden == 'Groups' ? 'hidden' : ''}`} key={id} onClick={() => selectChat(chat._id, member.user.name, member.user.surname, member.user.online)}>
                                 <div className="user-info">
                                     <div className="img-container">
                                         <img className='user-img' src={member.user.profileImg.image} alt="user icon" /> 

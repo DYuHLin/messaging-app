@@ -26,7 +26,8 @@ exports.post_register = asyncHandler(async (req, res, next) => {
                         email: req.body.email,
                         password: hashedPassword,
                         profileImg: req.body.image,
-                        friends: []
+                        friends: [],
+                        online: false
                     });
                     await user.save();
                     return res.json("ok");

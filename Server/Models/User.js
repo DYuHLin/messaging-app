@@ -11,6 +11,7 @@ const userSchema = new Schema({
     friends: [
         {user: {type: Schema.Types.ObjectId, ref: "Users"}}
     ],
+    online: {type: Boolean, required: true, default: false}
 });
 
 module.exports = mongoose.model("Users", userSchema);

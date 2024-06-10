@@ -10,6 +10,7 @@ import UserContext from '../Context/UserContext'
 import axios from 'axios'
 import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { jwtDecode } from 'jwt-decode'
 
 function Sidebar() {
     const [sidebar, setSidebar] = useState(false);
@@ -23,7 +24,8 @@ function Sidebar() {
     const navigate = useNavigate();
 
     const logout = async () => {
-        const token = { token: user.refreshToken };
+        const decoded = jwtDecode(user.accessToken);
+        const token = { token: user.refreshToken, email: decoded.user.email };
         axios.post(`http://localhost:5000/api/login/logout`, token, {
             headers: {
                 "Content-Type": "application/json",

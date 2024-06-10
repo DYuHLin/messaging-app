@@ -40,11 +40,14 @@ exports.post_login = asyncHandler(async (req, res, next) => {
 
         refreshTokens.push(refreshToken);
 
+        await users.updateOne({email: req.body.email}, {$set: {
+            online: true
+        }});
+
         return res.json({
             accessToken: accessToken,
             refreshToken: refreshToken
         });
-
     }catch(err){
         console.log(err);
     };
@@ -85,6 +88,9 @@ exports.refresh_token = asyncHandler(async (req, res, next) => {
 exports.post_logout = asyncHandler(async (req, res, next) => {
     const refreshToken = req.body.token;
     refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
+    await users.updateOne({email: req.body.email}, {$set: {
+        online: false
+    }});
     res.status(200).json("You have logged out.");
 });
 

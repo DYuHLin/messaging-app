@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Nunito Sans", sans-serif;
     color: white;
   }
   
@@ -169,7 +169,7 @@ h3{
 }
 
 .user-container{
-  width: 65%;
+  min-width: 90%;
 }
 
 .user-information{
@@ -189,6 +189,11 @@ h3{
   background-color: #24348a;
   border: 1px solid #3548b3;
   cursor: pointer;
+}
+
+.friend-info{
+  display: flex;
+  flex-direction: column;
 }
 
 .bar-chats:hover{
@@ -464,5 +469,15 @@ body::-webkit-scrollbar-thumb {
 @media(max-width: 580px){
   .msg-bubble{
     max-width: 200px;
+  }
+}
+
+@media(max-width: 350px){
+  .user{
+    justify-content: flex-start;
+  }
+
+  .send-message{
+    gap: 7px;
   }
 }

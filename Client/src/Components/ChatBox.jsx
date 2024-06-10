@@ -5,7 +5,7 @@ import * as RiIcons from 'react-icons/ri'
 import {jwtDecode} from 'jwt-decode'
 
 function ChatBox({socket}) {
-  const { user, messages, setMessages, name, setValid, setChat, valid } = useContext(UserContext);
+  const { user, messages, setMessages, name, setValid, setChat, valid, online } = useContext(UserContext);
   const [msg, setMsg] = useState('');
   const decodedUser = jwtDecode(user.accessToken);
   const lastMessage = useRef(null);
@@ -29,7 +29,10 @@ function ChatBox({socket}) {
     <div className={`chat-box ${valid == 'invalid' ? 'hidden' : ''}`}>
       <div className="chat-header">
         <RiIcons.RiArrowLeftDoubleFill className='menu-bars' onClick={backChats}/>
-        <h3 className='box-title'>{name}</h3>
+        <div className="chat-member-info">
+          <h3 className='box-title'>{name}</h3>
+          <span className="chat-message">{online == false ? 'Offline' : 'Online'}</span>
+        </div>
       </div>
         <div className="messages">
           {messages.map((msg, index) => {

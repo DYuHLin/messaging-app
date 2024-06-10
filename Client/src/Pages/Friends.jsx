@@ -52,7 +52,10 @@ function Friends() {
                                     <div className="img-container">
                                         <img className='user-img' src={res.user.profileImg.image} alt="user icon" />
                                     </div>
-                                    <span>{res.user.name + " " + res.user.surname}</span>
+                                    <div className="friend-info">
+                                        <span>{res.user.name + " " + res.user.surname}</span>
+                                        <span className='chat-message'>{res.user.online == false ? 'Offline' : 'Online'}</span>
+                                    </div>               
                                 </div>
                                 
                                     <div className={`user-options`}>                                   
