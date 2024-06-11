@@ -26,7 +26,7 @@ function Sidebar() {
     const logout = async () => {
         const decoded = jwtDecode(user.accessToken);
         const token = { token: user.refreshToken, email: decoded.user.email };
-        axios.post(`http://localhost:5000/api/login/logout`, token, {
+        axios.post(`${import.meta.env.VITE_URI}/login/logout`, token, {
             headers: {
                 "Content-Type": "application/json",
                 }

@@ -16,19 +16,19 @@ function Friends() {
 
     const createChat = (userId) => {
         const decoded = jwtDecode(user.accessToken);
-        axios.post('http://localhost:5000/api/chat', {user1: decoded.user._id, user2: userId}, {headers: {"Content-Type": "application/json"}});
+        axios.post(`${import.meta.env.VITE_URI}/chat`, {user1: decoded.user._id, user2: userId}, {headers: {"Content-Type": "application/json"}});
         navigate('/');
         toast.success('Chat created');
     };
 
     const removeFriend = (userId) => {
-        axios.put(`http://localhost:5000/api/register/${decodedUser.user._id}/deletefriend`, {friendId: userId}, {headers: {"Content-Type": "application/json"}});
+        axios.put(`${import.meta.env.VITE_URI}/register/${decodedUser.user._id}/deletefriend`, {friendId: userId}, {headers: {"Content-Type": "application/json"}});
         navigate('/');
         toast.success('Friend removed');
     };
 
     useEffect(() => {
-        axios({method: 'GET', url: `http://localhost:5000/api/register/${decodedUser.user._id}/getuser`}, {headers: { "Content-Type": "application/json" }})
+        axios({method: 'GET', url: `${import.meta.env.VITE_URI}/register/${decodedUser.user._id}/getuser`}, {headers: { "Content-Type": "application/json" }})
             .then((res) => setFriends(res.data.friends));
     }, [friends]);
 

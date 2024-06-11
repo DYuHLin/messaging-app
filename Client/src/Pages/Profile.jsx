@@ -20,10 +20,10 @@ function Profile() {
 
   const updateImg = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:5000/api/register/${decoded.user._id}/updateimg`, {imageId: image._id}, {headers: {"Content-Type": "application/json"}});
+    axios.put(`${import.meta.env.VITE_URI}/register/${decoded.user._id}/updateimg`, {imageId: image._id}, {headers: {"Content-Type": "application/json"}});
 
     const token = { token: user.refreshToken };
-      axios.post(`http://localhost:5000/api/login/logout`, token, {
+      axios.post(`${import.meta.env.VITE_URI}/login/logout`, token, {
           headers: {
               "Content-Type": "application/json",
               "authorization": "Bearer " + user.accessToken
@@ -38,7 +38,7 @@ function Profile() {
     const data = new FileReader();
     data.addEventListener('load', () => {
       setImg(data.result);
-      axios.post('http://localhost:5000/api/postimage', {image: data.result}, {headers: { "Content-Type": "application/json" }})
+      axios.post(`${import.meta.env.VITE_URI}/postimage`, {image: data.result}, {headers: { "Content-Type": "application/json" }})
       .then((res) => {setImage(res.data)})
     });
     data.readAsDataURL(e.target.files[0]);
@@ -50,7 +50,7 @@ function Profile() {
     } else if(chats.length !== 0){
       toast.error('You must delete all your chats first');
     } else if(groups.length == 0 && chats.length == 0){
-      axios.delete(`http://localhost:5000/api/register/${decoded.user._id}/delete`, {userId: decoded.user._id}, {headers: {"Content-Type": "application/json"}})
+      axios.delete(`${import.meta.env.VITE_URI}/register/${decoded.user._id}/delete`, {userId: decoded.user._id}, {headers: {"Content-Type": "application/json"}})
       .then((res) => console.log(res.data))
       toast.success("You have successfully deleted your account.");
       setUser(false);
@@ -59,11 +59,11 @@ function Profile() {
   };
 
   useEffect(() => {
-    axios({method: "GET", url: `http://localhost:5000/api/chat/${decoded.user._id}`}, {headers: {"Content-Type": "application/json"}})
+    axios({method: "GET", url: `${import.meta.env.VITE_URI}/chat/${decoded.user._id}`}, {headers: {"Content-Type": "application/json"}})
     .then(res => setChats(res.data)
     ).catch(err => console.log(err));  
 
-    axios({method: 'GET', url: `http://localhost:5000/api/group/${decoded.user._id}/getgroups`}, {headers: { "Content-Type": "application/json" }})
+    axios({method: 'GET', url: `${import.meta.env.VITE_URI}/group/${decoded.user._id}/getgroups`}, {headers: { "Content-Type": "application/json" }})
     .then((res) => setGroups(res.data));
   },[]);
 

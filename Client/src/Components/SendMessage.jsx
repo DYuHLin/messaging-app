@@ -32,7 +32,7 @@ function SendMessage({socket}) {
         try{
           const decoded = jwtDecode(user.accessToken);
           const messageSend = {id: decoded.user._id, chat: chat, image: image, message: content, video: link, date: Date.now()};
-          axios.post(`http://localhost:5000/api/message`, messageSend, {headers: { "Content-Type": "application/json" }})
+          axios.post(`${import.meta.env.VITE_URI}/message`, messageSend, {headers: { "Content-Type": "application/json" }})
             .then((res) => {
               socket.emit('send_message', {message: res.data, chat: chatId.current})
               setMessages(content => [...content, res.data]);

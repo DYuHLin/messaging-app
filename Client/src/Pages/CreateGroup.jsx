@@ -12,7 +12,7 @@ function CreateGroup() {
     const [hidden, setHidden] = useState('');
     const [group, setGroup] = useState('');
     const [status, setStatus] = useState('');
-    const [image, setImage] = useState({_id: "66423dd5b9c4d29102ffef31"});
+    const [image, setImage] = useState({_id: `${import.meta.env.VITE_PIC}`});
     const [users, setUsers] = useState(false);
     const { user } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
@@ -21,11 +21,11 @@ function CreateGroup() {
         e.preventDefault();
         try{
             const group = {name: name, id: decoded.user._id, image: image._id};
-            axios.post(`http://localhost:5000/api/group`, group, {headers: { "Content-Type": "application/json" }})
+            axios.post(`${import.meta.env.VITE_URI}/group`, group, {headers: { "Content-Type": "application/json" }})
             .then(res => setGroup(res.data))
                 .catch(err => console.log(err));
 
-            axios({method: 'GET', url: `http://localhost:5000/api/register/getusers`}, {headers: { "Content-Type": "application/json" }})
+            axios({method: 'GET', url: `${import.meta.env.VITE_URI}/register/getusers`}, {headers: { "Content-Type": "application/json" }})
                 .then((res) => setUsers(res.data))
         }catch(err){
         console.log(err);
@@ -37,7 +37,7 @@ function CreateGroup() {
 
     const addMembers = (id) => {
         const userAdd = {userId: id}
-        axios.put(`http://localhost:5000/api/group/${group._id}/add`, userAdd, {headers: { "Content-Type": "application/json" }})
+        axios.put(`${import.meta.env.VITE_URI}/group/${group._id}/add`, userAdd, {headers: { "Content-Type": "application/json" }})
            .then(res => setStatus(res.data))
            .then(() => {
             if(status == 'ok'){
@@ -52,7 +52,7 @@ function CreateGroup() {
     const convertBase64 = (e) => {
         const data = new FileReader();
         data.addEventListener('load', () => {
-          axios.post('http://localhost:5000/api/postimage', {image: data.result}, {headers: { "Content-Type": "application/json" }})
+          axios.post(`${import.meta.env.VITE_URI}/postimage`, {image: data.result}, {headers: { "Content-Type": "application/json" }})
           .then((res) => {setImage(res.data)})
         });
         data.readAsDataURL(e.target.files[0]);

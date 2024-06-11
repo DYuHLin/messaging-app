@@ -11,7 +11,7 @@ function Group() {
   const decoded = jwtDecode(user.accessToken);
 
   useEffect(() => {
-    axios({method: 'GET', url: `http://localhost:5000/api/group/${decoded.user._id}/getgroups`}, {headers: { "Content-Type": "application/json" }})
+    axios({method: 'GET', url: `${import.meta.env.VITE_URI}/group/${decoded.user._id}/getgroups`}, {headers: { "Content-Type": "application/json" }})
         .then((res) => setGroups(res.data))
 },[]);
 

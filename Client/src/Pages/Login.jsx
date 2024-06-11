@@ -16,7 +16,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
-      const res = await axios.post(`http://localhost:5000/api/login`, {email, password}, {headers: { "Content-Type": "application/json" }});
+      const res = await axios.post(`${import.meta.env.VITE_URI}/login`, {email, password}, {headers: { "Content-Type": "application/json" }});
       if(res.data === "email"){
         setError("This email does not exist.");
         toast.error("There was an error");

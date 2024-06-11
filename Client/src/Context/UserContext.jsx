@@ -17,9 +17,9 @@ export const UserProvider = ({children}) => {
     const [online, setOnline] = useState(false);
     const [valid, setValid] = useState('invalid');
     const [imageInfo, setImageInfo] = useState({
-        _id: "66423dd5b9c4d29102ffef31"
+        _id: `${import.meta.env.VITE_PIC}`
     });
-    const socket = io.connect('http://localhost:5000');
+    const socket = io.connect(`${import.meta.env.VITE_API}`);
     const chatId = useRef();
 
     const ProtectedRoutes = () => {

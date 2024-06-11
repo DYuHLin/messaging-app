@@ -21,7 +21,7 @@ function GroupPage() {
 
   const addMembers = (id) => {
     const userAdd = {userId: id}
-    axios.put(`http://localhost:5000/api/group/${group._id}/add`, userAdd, {headers: { "Content-Type": "application/json" }})
+    axios.put(`${import.meta.env.VITE_URI}/group/${group._id}/add`, userAdd, {headers: { "Content-Type": "application/json" }})
        .then((res) => setStatus(res.data))
        .then(() => {
           if(status == 'ok'){
@@ -37,31 +37,31 @@ function GroupPage() {
 };
 
 const deleteGroup = () => {
-  axios.delete(`http://localhost:5000/api/group/${group._id}/deletegroup`, {headers: { "Content-Type": "application/json" }})
+  axios.delete(`${import.meta.env.VITE_URI}/group/${group._id}/deletegroup`, {headers: { "Content-Type": "application/json" }})
         .catch(err => console.log(err));
         toast.success("Group deleted successfully");
         navigate('/');
 };
 
 const leaveGroup = (id) => {
-  axios.put(`http://localhost:5000/api/group/${group._id}/delete`, {userId: id}, {headers: { "Content-Type": "application/json" }})
+  axios.put(`${import.meta.env.VITE_URI}/group/${group._id}/delete`, {userId: id}, {headers: { "Content-Type": "application/json" }})
         .catch(err => console.log(err));
         toast.success("Group exited successfully");
         navigate('/');
 };
 
 const removeUser = (id) => {
-  axios.put(`http://localhost:5000/api/group/${group._id}/delete`, {userId: id}, {headers: { "Content-Type": "application/json" }})
+  axios.put(`${import.meta.env.VITE_URI}/group/${group._id}/delete`, {userId: id}, {headers: { "Content-Type": "application/json" }})
         .catch(err => console.log(err));
         toast.success("Member removed successfully");
         navigate(`/groups`);
 };
 
   useEffect(() => {
-    axios({method: 'GET', url: `http://localhost:5000/api/group/${id.id}`}, {headers: { "Content-Type": "application/json" }})
+    axios({method: 'GET', url: `${import.meta.env.VITE_URI}/group/${id.id}`}, {headers: { "Content-Type": "application/json" }})
         .then((res) => {setGroup(res.data); setMembers(res.data.members)});
 
-    axios({method: 'GET', url: `http://localhost:5000/api/register/getusers`}, {headers: { "Content-Type": "application/json" }})
+    axios({method: 'GET', url: `${import.meta.env.VITE_URI}/register/getusers`}, {headers: { "Content-Type": "application/json" }})
       .then((res) => setUsers(res.data))
 },[group]);
 

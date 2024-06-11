@@ -270,10 +270,12 @@ textarea::-webkit-scrollbar-thumb{
 .user-message{
   display: flex;
   flex-direction: column;
+  text-overflow: 'nowrap';
 }
 
 .chat-message{
   font-size: 14px;
+  text-overflow: 'nowrap';
 }
 
 .options-user{
@@ -511,5 +513,11 @@ body::-webkit-scrollbar-thumb {
 
   .send-message{
     gap: 7px;
+  }
+}
+
+@media(max-width: 655px){
+  .user{
+    justify-content: flex-start;
   }
 }

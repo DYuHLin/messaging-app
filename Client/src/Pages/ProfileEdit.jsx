@@ -24,13 +24,13 @@ function ProfileEdit() {
 
         const updated = {name: newName, surname: newSurname, email};
         try{
-            axios.put(`http://localhost:5000/api/register/${decoded.user._id}`, updated, {headers: { "Content-Type": "application/json" }})
+            axios.put(`${import.meta.env.VITE_URI}/register/${decoded.user._id}`, updated, {headers: { "Content-Type": "application/json" }})
             .then(res => res.data)
             .then(status => {
                 if(status === "failed"){
                 toast.error("This email already exists.");
                 } else if(status === "ok"){
-                    axios.post(`http://localhost:5000/api/login/logout`, token, {
+                    axios.post(`${import.meta.env.URI}/login/logout`, token, {
                         headers: {
                             "Content-Type": "application/json"
                             }

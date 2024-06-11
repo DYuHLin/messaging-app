@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import UserContext from '../Context/UserContext'
 import { jwtDecode } from 'jwt-decode'
@@ -6,7 +6,7 @@ import { jwtDecode } from 'jwt-decode'
 function ChatBar({socket, groups, chats}) {
     const [hidden, setHidden] = useState('Chats');
     const [search, setSearch] = useState('');
-    const { user, setChat, setMessages, messages, chatId, setName, valid, setValid, setOnline } = useContext(UserContext);
+    const { user, setChat, setMessages, chatId, setName, valid, setValid, setOnline } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
 
       const selectChat = (id, name, surname, live) => {
@@ -15,7 +15,7 @@ function ChatBar({socket, groups, chats}) {
         setValid('valid');
         setOnline(live);
         chatId.current = id;
-        axios({method: "GET", url: `http://localhost:5000/api/message/${id}`}, {headers: {"Content-Type": "application/json"}})
+        axios({method: "GET", url: `${import.meta.env.VITE_URI}/message/${id}`}, {headers: {"Content-Type": "application/json"}})
             .then(res => setMessages(res.data)
             ).catch(err => console.log(err));  
         socket.emit('join_chat', chatId.current); 

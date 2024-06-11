@@ -16,20 +16,20 @@ function UsersList() {
     const decoded = jwtDecode(user.accessToken);
 
     useEffect(() => {
-        axios({method: 'GET', url: `http://localhost:5000/api/register/getusers`}, {headers: { "Content-Type": "application/json" }})
+        axios({method: 'GET', url: `${import.meta.env.VITE_URI}/register/getusers`}, {headers: { "Content-Type": "application/json" }})
             .then((res) => setUsers(res.data));
     },[]);
 
     const createChat = (userId) => {
         const decoded = jwtDecode(user.accessToken);
-        axios.post('http://localhost:5000/api/chat', {user1: decoded.user._id, user2: userId}, {headers: {"Content-Type": "application/json"}});
+        axios.post(`${import.meta.env.VITE_URI}/chat`, {user1: decoded.user._id, user2: userId}, {headers: {"Content-Type": "application/json"}});
         navigate('/');
         toast.success('Chat created');
     };
 
     const addFriend = (userId) => {
         const decoded = jwtDecode(user.accessToken);
-        axios.put(`http://localhost:5000/api/register/${decoded.user._id}/addfriend`, {friendId: userId}, {headers: {"Content-Type": "application/json"}})
+        axios.put(`${import.meta.env.VITE_URI}/register/${decoded.user._id}/addfriend`, {friendId: userId}, {headers: {"Content-Type": "application/json"}})
         .then((res) => {
             if(res.data =='ok'){
                 toast.success('Friend added');

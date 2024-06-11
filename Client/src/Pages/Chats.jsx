@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 import UserContext from '../Context/UserContext'
 import * as IoIcons from 'react-icons/io'
 import {jwtDecode} from 'jwt-decode'
@@ -14,10 +13,9 @@ function Chats() {
     const [chat, setChat] = useState(false);
     const { user } = useContext(UserContext);
     const decoded = jwtDecode(user.accessToken);
-    const navigate = useNavigate();
   
     useEffect(() => {
-            axios({method: "GET", url: `http://localhost:5000/api/chat/${decoded.user._id}`}, {headers: {"Content-Type": "application/json"}})
+            axios({method: "GET", url: `${import.meta.env.VITE_URI}/chat/${decoded.user._id}`}, {headers: {"Content-Type": "application/json"}})
             .then(res => setChats(res.data)
             ).catch(err => console.log(err));  
       },[]);
@@ -29,7 +27,7 @@ function Chats() {
 
       const deleteChat = () => {
         try{
-          axios.delete(`http://localhost:5000/api/chat/${chat}`, {headers: { "Content-Type": "application/json" }});
+          axios.delete(`${import.meta.env.VITE_URI}/chat/${chat}`, {headers: { "Content-Type": "application/json" }});
             toast.success("You have deleted this chat successfully");
             setHidden('hidden');
             setChat(false);

@@ -10,7 +10,7 @@ function ImageUpload() {
       const data = new FileReader();
       data.addEventListener('load', () => {
         setImg(data.result);
-        axios.post('http://localhost:5000/api/postimage', {image: data.result}, {headers: { "Content-Type": "application/json" }})
+        axios.post(`${import.meta.env.VITE_URI}/postimage`, {image: data.result}, {headers: { "Content-Type": "application/json" }})
         .then((res) => {setImageInfo(res.data)})
       });
       data.readAsDataURL(e.target.files[0]);
